@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Knowledge Transfer – Login</title><link rel="stylesheet" href="styles.css?v=6"></head>
+<body id="kt-login"><main class="lg-page"><div class="lg-card">
+<h1>Knowledge <span>Transfer</span></h1>
+<form id="f" novalidate>
+<label for="u">Username</label>
+<input id="u" autocomplete="username" placeholder="Enter your username" autofocus>
+<label for="p">Password</label>
+<div class="pw"><input id="p" type="password" autocomplete="current-password" placeholder="Enter your password"><button type="button" id="eye" aria-label="Show password">Show</button></div>
+<p id="err" class="err" hidden>Incorrect username or password.</p>
+<button type="submit" class="go">Sign in</button>
+</form></div></main>
+<script src="auth.js?v=6"></script>
+<script>
+if (ktOk()) location.replace("index.html");
+document.getElementById("eye").onclick=()=>{const s=p.type==="password";p.type=s?"text":"password";eye.textContent=s?"Hide":"Show"};
+document.getElementById("f").onsubmit = e => {
+  e.preventDefault();
+  if (u.value.trim() === KT_USER && p.value === KT_PASS) {
+    try { sessionStorage.setItem("kt_auth", "1"); } catch (x) {}
+    location.replace("index.html");
+  } else document.getElementById("err").hidden = false;
+};
+</script></body></html>
