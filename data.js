@@ -1954,23 +1954,6 @@ window.KT = [
             }
           }
         ]
-      },
-      {
-        "title": "Traps that have cost time",
-        "parts": [
-          {
-            "ul": [
-              "Never derive <code>client_id</code> from the JWT <code>sub</code> (it is a user id).",
-              "The selected family member lives in sessionStorage, not the URL; always go through <code>NavigationSync</code>.",
-              "Client views call <code>/.../me/...</code>; admin views call <code>/.../{clientId}/...</code>. Keep both in sync when changing a hook.",
-              "Currency (INR / USD) must be in query keys and API params.",
-              "Admin read-only mode is driven by the <code>:clientId</code> route param; gate every write action with <code>usePermissions()</code>.",
-              "Restart Vite after editing <code>.env</code>; rebuild for each environment.",
-              "Keep <code>FamilyDataProvider</code> inside <code>QueryClientProvider</code>."
-            ],
-            "ordered": false
-          }
-        ]
       }
     ]
   },
@@ -2793,25 +2776,6 @@ window.KT = [
                 ]
               ]
             }
-          }
-        ]
-      },
-      {
-        "title": "12. Traps to Avoid",
-        "parts": [
-          {
-            "ul": [
-              "Do not run <code>expo prebuild --clean</code>; the widget code lives in <code>android/</code> and <code>ios/</code>.",
-              "Role matching uses the upper-cased server string. A new role name falls through to the client UI until it is added in <code>app/(tabs)/_layout.tsx</code>.",
-              "Switching family members must call <code>ApiService.clearClientCache</code>, or the previous member's strategy data shows.",
-              "Token refresh is shared through one in-flight promise. Do not add a second refresh path.",
-              "Metro blocks asset paths containing <code>%</code>.",
-              "<code>patch-package</code> runs on install; a failed patch means the React Native version changed.",
-              "The tab bar changes when a staff user opens a client, and the staff tabs return on entering an RM route. This is intended.",
-              "The widget updates two seconds after login so the session can settle. This is intended.",
-              "Hidden tabs (portfolio, transactions, reports, admin-dashboard, clients, audit) are reached by navigation on purpose.",
-              "Never commit signing files or passwords to git."
-            ]
           }
         ]
       }
