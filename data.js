@@ -2085,7 +2085,10 @@ window.KT = [
             "p": "The app is a thin client over a REST backend. Screens read state from contexts and hooks, which call <code>ApiService</code>; <code>ApiService</code> is the only code that talks to the backend and handles the bearer token and refresh. The session and currency are kept in AsyncStorage, and <code>UserContext</code> pushes cached portfolio data to the native widgets through <code>WidgetModule</code>."
           },
           {
-            "p": "<i>[Diagram not included in the export]</i>"
+            "img": {
+              "src": "screenshots/from-pdf/mobile-architecture.png",
+              "cap": "App architecture · 7 components"
+            }
           },
           {
             "ul": [
@@ -2273,6 +2276,625 @@ window.KT = [
               "Login calls <code>/api/v1/auth/login</code>. Session values are stored in AsyncStorage under the keys in <code>STORAGE_KEYS</code> (<code>config/api.ts</code>).",
               "Requests send <code>Authorization: Bearer &lt;token&gt;</code>. On a 401 from a non-auth endpoint, <code>performTokenRefresh()</code> calls <code>/api/v1/auth/refresh</code> once and retries. Parallel 401s share one in-flight refresh."
             ]
+          }
+        ]
+      },
+      {
+        "title": "Screens and URLs",
+        "parts": [
+          {
+            "p": "The mobile app has no web address for each screen. Each screen has an in-app route that comes from its file under <code>app/</code> (Expo Router); the route groups <code>(auth)</code> and <code>(tabs)</code> are not part of the path. The API host <code>https://xirr.ai</code> is not a page URL. Screenshots were taken on a phone on 12 Nov 2026."
+          },
+          {
+            "p": "<b>Shared parts (not repeated below)</b>"
+          },
+          {
+            "ul": [
+              "Header: XIRR logo, a profile switcher labelled \"Swap profile\", and a notification bell (<code>components/Header.tsx</code>). <code>components/common/SharedHeader.tsx</code> also draws a \"Swap profile\" switcher. Which of the two is on a given screen: not confirmed.",
+              "Bottom tab bar: Overview, Dashboard, Analytics, Strategies, Profile, with the current tab highlighted (<code>app/(tabs)/_layout.tsx</code>). It is not visible on Login, Forgot password, the Dividends list and its popup, or the legal pages.",
+              "Footer: not visible on any screen."
+            ],
+            "ordered": false
+          },
+          {
+            "p": "<b>Personal data check.</b> The screenshots show a family name (\"Boyd\" in the header, in capitals on Overview) and a full person name on Profile, plus portfolio values and holdings. No password, email address, phone number, account number or PAN is visible, and the login fields are empty. The text below calls this \"the logged-in family profile\". Blur the names in <code>Overview.png</code>, <code>Profile.png</code> and the header of every other screenshot before sharing this doc outside Xerago."
+          },
+          {
+            "h": "Login · <code>/login</code>"
+          },
+          {
+            "p": "File: <code>app/(auth)/login.tsx</code>."
+          },
+          {
+            "img": {
+              "src": "Screenshots-Mobile/Login.png",
+              "cap": "Login screen",
+              "phone": true
+            }
+          },
+          {
+            "p": "<b>Screen purpose:</b> The user signs in with a username and password."
+          },
+          {
+            "p": "<b>Components:</b>"
+          },
+          {
+            "ul": [
+              "Logo: XIRR wordmark above the title.",
+              "Title block: \"Login\" and \"Enter your credentials\".",
+              "Username field: text input with a user icon.",
+              "Password field: text input with a lock icon and a show / hide eye icon.",
+              "Sign In button: gradient button for submitting the credentials.",
+              "Forgot Password? link: text link below the button.",
+              "Header and tab bar: not visible."
+            ],
+            "ordered": false
+          },
+          {
+            "h": "Forgot password · <code>/forgot-password</code>"
+          },
+          {
+            "p": "File: <code>app/(auth)/forgot-password.tsx</code>."
+          },
+          {
+            "img": {
+              "src": "Screenshots-Mobile/Forget Password.png",
+              "cap": "Forgot password screen",
+              "phone": true
+            }
+          },
+          {
+            "p": "<b>Screen purpose:</b> The user enters an email address to ask for a password reset link. In the code, the Send Reset Link action has a TODO and does not call the API (see section 8)."
+          },
+          {
+            "p": "<b>Components:</b>"
+          },
+          {
+            "ul": [
+              "Back arrow: top-left of the card.",
+              "Logo: XIRR wordmark.",
+              "Title block: \"Forgot Password?\" and one line of instructions.",
+              "Email field: text input with an envelope icon.",
+              "Send Reset Link button: gradient button.",
+              "Back to Login link: text link below the button."
+            ],
+            "ordered": false
+          },
+          {
+            "h": "Overview · <code>/overview</code>"
+          },
+          {
+            "p": "File: <code>app/(tabs)/overview.tsx</code>. A second file, <code>app/overview.tsx</code>, maps to the same path; which one the app shows is not confirmed (see section 11). The \"VIEW FULL DASHBOARD\" button text is in the <code>(tabs)</code> file."
+          },
+          {
+            "img": {
+              "src": "Screenshots-Mobile/Overview.png",
+              "cap": "Overview, family summary",
+              "phone": true
+            }
+          },
+          {
+            "p": "<b>Screen purpose:</b> The first screen after login. It shows the logged-in family profile's total portfolio value, the change from last month, and one strategy summary."
+          },
+          {
+            "p": "<b>Components:</b>"
+          },
+          {
+            "ul": [
+              "Header: logo and notification bell only; no profile switcher is visible.",
+              "Family name heading: the logged-in family profile's name in capitals.",
+              "Total Portfolio Value card: value, and \"Change from Last Month\" with an arrow and percentage.",
+              "Strategy summary box inside the card: strategy name, Current XIRR, Sharpe Ratio, and a banner comparing with NIFTY 50.",
+              "Member avatar: circle with initials and a name label. <code>FamilyTree</code> is imported by this file; that this circle is that component is not confirmed.",
+              "VIEW FULL DASHBOARD button: gradient button at the bottom.",
+              "Bottom tab bar: Overview highlighted."
+            ],
+            "ordered": false
+          },
+          {
+            "h": "Dashboard · <code>/dashboard</code>"
+          },
+          {
+            "p": "File: <code>app/(tabs)/dashboard.tsx</code>."
+          },
+          {
+            "img": {
+              "src": "Screenshots-Mobile/Dashboard1.png",
+              "cap": "Dashboard, top of the page",
+              "phone": true
+            }
+          },
+          {
+            "p": "<b>Screen purpose:</b> The user sees the portfolio value and the month's gain, picks a strategy, and reads its allocation and key numbers."
+          },
+          {
+            "p": "<b>Components:</b>"
+          },
+          {
+            "ul": [
+              "Header: logo, profile switcher with \"Swap profile\", and bell.",
+              "Total Portfolio card: total value, and Month's Gain as an amount with a percentage chip.",
+              "Select a Strategy: label with a dropdown that shows the strategy name.",
+              "Snapshot card: one bar showing 100.0%, with \"1 strategy\" and \"Equity\" labels below it.",
+              "Metric cards: Invested, Current Value, XIRR, Sharpe Ratio (<code>MetricCard</code>).",
+              "Gradient button: cut off at the bottom edge, behind the tab bar.",
+              "Bottom tab bar: Dashboard highlighted."
+            ],
+            "ordered": false
+          },
+          {
+            "img": {
+              "src": "Screenshots-Mobile/Dashboard2.png",
+              "cap": "Dashboard, scrolled down, Market Movers",
+              "phone": true
+            }
+          },
+          {
+            "p": "<b>Screen purpose:</b> The user opens the analytics screen or looks at the best and worst performing stocks."
+          },
+          {
+            "p": "<b>Components:</b>"
+          },
+          {
+            "ul": [
+              "Header: same as above.",
+              "Metric cards: the same four cards, scrolled up.",
+              "VIEW ANALYTICS button: gradient button with a chart icon.",
+              "Market Movers: four chips, Best, Worst, Gainer, Loser, with Best selected (<code>MarketMovers</code>).",
+              "Best Performer card: table with Stocks, Current Value and Returns; each row has a symbol, quantity, value and a return chip.",
+              "Bottom tab bar: Dashboard highlighted."
+            ],
+            "ordered": false
+          },
+          {
+            "h": "Strategies · <code>/strategies</code>"
+          },
+          {
+            "p": "File: <code>app/(tabs)/strategies.tsx</code>; it imports <code>SharedHeader</code>, <code>PerformanceChart</code> and <code>Pagination</code>. A second file, <code>app/strategies.tsx</code>, maps to the same path; which one the app shows is not confirmed."
+          },
+          {
+            "img": {
+              "src": "Screenshots-Mobile/Strategy_overview.png",
+              "cap": "Strategies, strategy versus benchmark",
+              "phone": true
+            }
+          },
+          {
+            "p": "<b>Screen purpose:</b> The user picks a strategy and a benchmark and reads the two side by side as a table and a NAV graph."
+          },
+          {
+            "p": "<b>Components:</b>"
+          },
+          {
+            "ul": [
+              "Header: logo, profile switcher with \"Swap profile\", and bell.",
+              "Select a Strategy: label with a dropdown that shows the strategy name.",
+              "Comparison table: rows XIRR, Sharpe Ratio, Max Drawdown and Current NAV, with columns Portfolio and NIFTY 50.",
+              "Select Benchmark: label with a dropdown that shows NIFTY 50.",
+              "NAV Graph card: title, an expand icon at the top right, a LATEST date label with the two NAV values, a legend, and two lines (one solid, one dashed) on a NAV (INR) axis.",
+              "Bottom tab bar: Strategies highlighted."
+            ],
+            "ordered": false
+          },
+          {
+            "img": {
+              "src": "Screenshots-Mobile/Strategy_holdings.png",
+              "cap": "Strategies, holdings list",
+              "phone": true
+            }
+          },
+          {
+            "p": "<b>Screen purpose:</b> The user reads the totals for the strategy and picks a holding to open. In the code, a tap on a holding opens <code>/audit/[id]</code>."
+          },
+          {
+            "p": "<b>Components:</b>"
+          },
+          {
+            "ul": [
+              "Search field: \"Search holdings...\" with a magnifier icon.",
+              "Holding Statement button: gradient button, shown as the active choice.",
+              "Reports button: outlined button with a download icon.",
+              "Summary card: Total Investment, Current Value, Day P&amp;L, Unrealized P&amp;L (amount and percentage), No of Instruments, and Gainers / Losers shown as 3 / 1.",
+              "Holding rows: symbol, quantity and average price, invested amount, LTP with a percentage, P/L, XIRR, and a chevron.",
+              "Pagination: not visible.",
+              "Bottom tab bar: Strategies highlighted."
+            ],
+            "ordered": false
+          },
+          {
+            "h": "Holding detail · <code>/audit/[id]</code>"
+          },
+          {
+            "p": "Files: <code>app/(tabs)/audit/[id].tsx</code> and <code>app/audit/[id].tsx</code>, both rendering <code>components/features/AuditDetail.tsx</code>. These screenshots match its five tab kinds (transactions, dividend history, announcements, returns, compare). Which of the two route files is used is not confirmed."
+          },
+          {
+            "p": "The top of every holding screen is the same. It has a back arrow, a chip with the strategy name, the stock symbol, and a row of three figures: LTP, INVESTED and XIRR. Below that is a row of five tabs: Transactions, Dividend History, Announcements, Returns, Compare. The selected tab has a gradient fill. Long tab names are cut with \"...\". The header and the bottom tab bar are the shared parts above."
+          },
+          {
+            "img": {
+              "src": "Screenshots-Mobile/Strategy_holdings_transactions.png",
+              "cap": "Holding detail, Transactions tab",
+              "phone": true
+            }
+          },
+          {
+            "p": "<b>Screen purpose:</b> The user sees each buy of this holding with its date, quantity, cost and amount."
+          },
+          {
+            "p": "<b>Components:</b>"
+          },
+          {
+            "ul": [
+              "Transactions table: columns Date, Type, Qty / Cost per unit, Amount.",
+              "Transaction row: date, a BUY chip, quantity with the unit cost, amount, and a gain figure in green with a percentage."
+            ],
+            "ordered": false
+          },
+          {
+            "img": {
+              "src": "Screenshots-Mobile/Strategy_holdings_dividend.png",
+              "cap": "Holding detail, Dividend History tab",
+              "phone": true
+            }
+          },
+          {
+            "p": "<b>Screen purpose:</b> The user sees the dividends received on this holding."
+          },
+          {
+            "p": "<b>Components:</b>"
+          },
+          {
+            "ul": [
+              "Dividend table: columns Record Date, Dividend Rate, Quantity, Amount Received.",
+              "Dividend row: one row with a date, a rate, a quantity and an amount."
+            ],
+            "ordered": false
+          },
+          {
+            "img": {
+              "src": "Screenshots-Mobile/Strategy_holdings_announcemnts.png",
+              "cap": "Holding detail, Announcements tab",
+              "phone": true
+            }
+          },
+          {
+            "p": "<b>Screen purpose:</b> The user reads company announcements for this holding."
+          },
+          {
+            "p": "<b>Components:</b>"
+          },
+          {
+            "ul": [
+              "Announcement card: date at the top right, a bold title, then Company, Subject and Overview lines, with the overview cut off with \"...\".",
+              "View Source Report link: green text with an external-link icon and a chevron at the bottom of each card.",
+              "Second card: partly visible below the first."
+            ],
+            "ordered": false
+          },
+          {
+            "img": {
+              "src": "Screenshots-Mobile/Strategy_holdings_return.png",
+              "cap": "Holding detail, Returns tab",
+              "phone": true
+            }
+          },
+          {
+            "p": "<b>Screen purpose:</b> The user reads the holding's return over five periods."
+          },
+          {
+            "p": "<b>Components:</b>"
+          },
+          {
+            "ul": [
+              "Return tiles: 1 DAY, 1 WEEK, 1 MONTH, 3 MONTH and 1 YEAR, each with a percentage chip. Negative values are red and positive values are green."
+            ],
+            "ordered": false
+          },
+          {
+            "img": {
+              "src": "Screenshots-Mobile/Strategy_holdings_compare1.png",
+              "cap": "Holding detail, Compare tab, top",
+              "phone": true
+            }
+          },
+          {
+            "p": "<b>Screen purpose:</b> The user compares the holding with two indices over time."
+          },
+          {
+            "p": "<b>Components:</b>"
+          },
+          {
+            "ul": [
+              "COMPARISON ANALYSIS card: title with an expand icon at the top right.",
+              "Legend: the stock symbol, NIFTY 50 and NIFTY 500, each with a coloured dot.",
+              "Hint box: dashed box with \"Touch/Drag on graph to see details\".",
+              "Line chart: three lines on a percentage axis with a date axis below.",
+              "Comparison table: columns Name, XIRR, Sharpe Ratio, Drawdown; the first row is visible."
+            ],
+            "ordered": false
+          },
+          {
+            "img": {
+              "src": "Screenshots-Mobile/Strategy_holdings_compare2.png",
+              "cap": "Holding detail, Compare tab, scrolled down",
+              "phone": true
+            }
+          },
+          {
+            "p": "<b>Screen purpose:</b> The same screen, scrolled so the whole table is visible."
+          },
+          {
+            "p": "<b>Components:</b>"
+          },
+          {
+            "ul": [
+              "Line chart: same as above.",
+              "Comparison table: three rows, the stock symbol, NIFTY 50 and NIFTY 500, with XIRR, Sharpe Ratio and Drawdown; names are coloured to match the chart legend."
+            ],
+            "ordered": false
+          },
+          {
+            "h": "Analytics · <code>/analytics</code>"
+          },
+          {
+            "p": "File: <code>app/(tabs)/analytics.tsx</code>."
+          },
+          {
+            "img": {
+              "src": "Screenshots-Mobile/Analytics.png",
+              "cap": "Analytics, XIRR graph and history list",
+              "phone": true
+            }
+          },
+          {
+            "p": "<b>Screen purpose:</b> The user sees how the XIRR of the top strategies moved over time and opens a history list."
+          },
+          {
+            "p": "<b>Components:</b>"
+          },
+          {
+            "ul": [
+              "Header: logo, profile switcher with \"Swap profile\", and bell.",
+              "Top 3 Strategies heading.",
+              "XIRR Graph card: title, an expand icon at the top right, a percentage axis, a date axis and a green line with a filled area (<code>MultiStrategyXirrChart</code> is imported by this file).",
+              "Strategy chip: a coloured dot, the strategy name and its XIRR.",
+              "VIEW STRATEGIES button: gradient button with a target icon.",
+              "History: heading with an \"All Strategies\" dropdown.",
+              "History list: rows Dividends, Transactions, Announcements and Corp. Actions, each with an icon and a chevron.",
+              "Bottom tab bar: Analytics highlighted."
+            ],
+            "ordered": false
+          },
+          {
+            "h": "Dividends · <code>/analytics/dividends</code>"
+          },
+          {
+            "p": "File: <code>app/analytics/dividends.tsx</code>; it imports <code>AnalyticsHeader</code>, <code>AnalyticsInfoModal</code>, <code>Pagination</code> and <code>Header</code>."
+          },
+          {
+            "img": {
+              "src": "Screenshots-Mobile/Analytics_Dividend.png",
+              "cap": "Dividends list",
+              "phone": true
+            }
+          },
+          {
+            "p": "<b>Screen purpose:</b> The user reads the dividends declared for held stocks and can filter by strategy or search by name."
+          },
+          {
+            "p": "<b>Components:</b>"
+          },
+          {
+            "ul": [
+              "Header: logo, profile switcher with \"Swap profile\", and bell.",
+              "Back arrow and \"Dividends\" title, with an \"All Strategies\" dropdown on the right.",
+              "Search field: \"Search dividends...\" with a magnifier icon.",
+              "Dividends table: columns STOCK and RATE. Each row has a symbol, the company name and a record date, and the dividend type with its amount in blue.",
+              "Pagination: not visible.",
+              "Bottom tab bar: not visible."
+            ],
+            "ordered": false
+          },
+          {
+            "img": {
+              "src": "Screenshots-Mobile/Analytics_Dividend_Popup.png",
+              "cap": "Dividends, detail popup",
+              "phone": true
+            }
+          },
+          {
+            "p": "<b>Screen purpose:</b> The user reads the full details of one dividend."
+          },
+          {
+            "p": "<b>Components:</b>"
+          },
+          {
+            "ul": [
+              "Popup (<code>AnalyticsInfoModal</code>, with the section title \"Dividend Details:\" set in the file): a bottom sheet over a dimmed screen, with a handle bar at the top.",
+              "Title block: the label DIVIDEND, the amount, the company name with \"Dividend Declared\", and a close button.",
+              "Details list: Company, Dividend Type, Ex-Date, Record Date, Payment Date (shown as TBD) and Stock.",
+              "Done button: gradient button at the bottom."
+            ],
+            "ordered": false
+          },
+          {
+            "h": "Reports · <code>/reports</code>"
+          },
+          {
+            "p": "File: <code>app/(tabs)/reports.tsx</code>, a hidden tab; it imports <code>SharedHeader</code>. A Reports button is visible on the Strategies holdings screen; that it opens this screen is not confirmed."
+          },
+          {
+            "img": {
+              "src": "Screenshots-Mobile/Reports.png",
+              "cap": "Reports, list",
+              "phone": true
+            }
+          },
+          {
+            "p": "<b>Screen purpose:</b> The user chooses which report to set up and download."
+          },
+          {
+            "p": "<b>Components:</b>"
+          },
+          {
+            "ul": [
+              "Header: logo, profile switcher with \"Swap profile\", and bell.",
+              "Back arrow: top right of the page body.",
+              "Available Reports card: title and the line \"Select a report to configure and download\".",
+              "Report rows: Portfolio Report, Dividend Report, Corpus Report (Ledger) and Gain/Loss Report. Each has a coloured icon, a one-line description and a chevron.",
+              "Bottom tab bar: no tab highlighted."
+            ],
+            "ordered": false
+          },
+          {
+            "img": {
+              "src": "Screenshots-Mobile/Reports_portfolio.png",
+              "cap": "Reports, Portfolio Report options",
+              "phone": true
+            }
+          },
+          {
+            "p": "<b>Screen purpose:</b> The user sets the options for the Portfolio Report."
+          },
+          {
+            "p": "<b>Components:</b>"
+          },
+          {
+            "ul": [
+              "Back arrow and \"Reports\" heading.",
+              "Portfolio Report panel: title and a description line.",
+              "Dropdowns: \"Current\", \"EXCEL\" and \"Members\".",
+              "Download button: not visible.",
+              "Bottom tab bar: no tab highlighted."
+            ],
+            "ordered": false
+          },
+          {
+            "h": "Profile · <code>/profile</code>"
+          },
+          {
+            "p": "File: <code>app/(tabs)/profile.tsx</code>."
+          },
+          {
+            "img": {
+              "src": "Screenshots-Mobile/Profile.png",
+              "cap": "Profile",
+              "phone": true
+            }
+          },
+          {
+            "p": "<b>Screen purpose:</b> The user sees who is signed in, changes settings, opens the legal pages and logs out."
+          },
+          {
+            "p": "<b>Components:</b>"
+          },
+          {
+            "ul": [
+              "Banner: round avatar icon and the signed-in person's full name. The shared header is not shown here.",
+              "Settings card: Currency (value INR), Change Password and Notifications, each with a chevron.",
+              "About card: App Version (1.0.0), Privacy Policy, Terms &amp; Conditions and Disclaimer.",
+              "Logout button: solid blue button.",
+              "Bottom tab bar: Profile highlighted."
+            ],
+            "ordered": false
+          },
+          {
+            "h": "Privacy policy · <code>/privacy-policy</code>"
+          },
+          {
+            "p": "File: <code>app/privacy-policy.tsx</code>."
+          },
+          {
+            "img": {
+              "src": "Screenshots-Mobile/Privacy_policy.png",
+              "cap": "Privacy policy",
+              "phone": true
+            }
+          },
+          {
+            "p": "<b>Screen purpose:</b> The user reads the privacy policy."
+          },
+          {
+            "p": "<b>Components:</b>"
+          },
+          {
+            "ul": [
+              "Title bar: back arrow and the title \"Privacy Policy\" on a grey-blue background.",
+              "Policy text: justified paragraphs with numbered blue section headings and a blue link to the Terms of Use and Service."
+            ],
+            "ordered": false
+          },
+          {
+            "h": "Terms · <code>/terms</code>"
+          },
+          {
+            "p": "File: <code>app/terms.tsx</code>."
+          },
+          {
+            "img": {
+              "src": "Screenshots-Mobile/Terms.png",
+              "cap": "Terms of Service",
+              "phone": true
+            }
+          },
+          {
+            "p": "<b>Screen purpose:</b> The user reads the terms of use. The Profile row calls it \"Terms &amp; Conditions\"; the screen title is \"Terms of Service\"."
+          },
+          {
+            "p": "<b>Components:</b>"
+          },
+          {
+            "ul": [
+              "Title bar: back arrow and the title \"Terms of Service\".",
+              "Terms text: numbered blue section headings (\"1. Introduction\") and justified paragraphs."
+            ],
+            "ordered": false
+          },
+          {
+            "h": "Disclaimer · <code>/disclaimer</code>"
+          },
+          {
+            "p": "File: <code>app/disclaimer.tsx</code>."
+          },
+          {
+            "img": {
+              "src": "Screenshots-Mobile/Discalimer.png",
+              "cap": "Disclaimer",
+              "phone": true
+            }
+          },
+          {
+            "p": "<b>Screen purpose:</b> The user reads the disclaimer."
+          },
+          {
+            "p": "<b>Components:</b>"
+          },
+          {
+            "ul": [
+              "Title bar: back arrow and the title \"Disclaimer\".",
+              "Disclaimer card: a bordered, tinted card with a heading and two paragraphs."
+            ],
+            "ordered": false
+          },
+          {
+            "h": "Pages with no screenshot"
+          },
+          {
+            "p": "These routes exist in <code>app/</code> but have no screenshot in the folder: Welcome (<code>/welcome</code>), Notifications (<code>/notifications</code>), News &amp; Events (<code>/news-events</code>), Change Password (<code>/change-password</code>), the Announcements, Transactions and Corp. Actions lists (<code>/analytics/announcements</code>, <code>/analytics/transactions</code>, <code>/analytics/corp-actions</code>), the full-screen charts (<code>/chart-fullscreen</code>, <code>/compare-chart-fullscreen</code>), and the staff (RM) screens and vault and upload screens."
+          },
+          {
+            "h": "Unsure"
+          },
+          {
+            "ul": [
+              "Two files map to <code>/overview</code>, <code>/strategies</code> and <code>/audit/[id]</code> (one in <code>app/</code>, one in <code>app/(tabs)/</code>). Which one is live is not confirmed.",
+              "Which of <code>Header</code> and <code>SharedHeader</code> draws the header on each screen is not confirmed.",
+              "The Profile screen shows App Version 1.0.0, but section 1 gives the app version as 1.2.10 from <code>app.json</code>.",
+              "The LT holding shows XIRR 8.98% at the top, and 8.92% in the Compare table.",
+              "How the user reaches the Reports screens is not confirmed.",
+              "The Overview member circle is not confirmed to be the <code>FamilyTree</code> component."
+            ],
+            "ordered": false
           }
         ]
       },
@@ -2593,7 +3215,7 @@ window.KT = [
         "title": "9. State Management",
         "parts": [
           {
-            "p": "The app uses React Context for shared state and plain hooks for server data. <code>QueryClientProvider</code> (React Query) is mounted in <code>app/_layout.tsx</code>, but a search of <code>app/</code>, <code>components/</code>, <code>hooks/</code> and <code>contexts/</code> found no <code>useQuery</code> or <code>useMutation</code> calls, so React Query is currently unused."
+            "p": "The app uses React Context for shared state and fetches server data in two ways. The client tabs and the shared hooks use plain <code>useState</code> + <code>useEffect</code>. React Query (<code>useQuery</code>, 30 calls in 14 files) is used in the pushed screens (overview, strategies, strategy-details, welcome, notifications, news-events, chart-fullscreen), the hidden tabs, and the staff screens (<code>rm-dashboard</code>, <code>rm-clients</code>, <code>FamilyProfileDetails</code>). <code>QueryClientProvider</code> is mounted in <code>app/_layout.tsx</code>."
           },
           {
             "table": {
@@ -2735,9 +3357,9 @@ window.KT = [
                   "AsyncStorage is unencrypted. <code>expo-secure-store</code> is installed and is the safer place."
                 ],
                 [
-                  "React Query installed but unused",
-                  "<code>app/_layout.tsx</code>; hooks use <code>useState</code> / <code>useEffect</code>",
-                  "No shared cache, request de-duplication or retry. Either adopt it or remove the provider."
+                  "Two data-fetching styles",
+                  "<code>useQuery</code> in 14 files; the client tabs and <code>hooks/*</code> use <code>useState</code> / <code>useEffect</code>",
+                  "Caching and retry differ by screen. Pick one approach when you change a screen."
                 ],
                 [
                   "Cleartext traffic allowed on Android",

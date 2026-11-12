@@ -68,3 +68,4 @@ header{position:relative}
 .sec .shot{margin:6px 0 14px}.sec .shot a{display:block}
 .sec .shot img{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:10px;background:#fff;box-shadow:0 1px 6px rgba(90,58,34,.12)}
 .sec .shot figcaption{margin-top:6px;font-size:13px;color:var(--mute);font-style:italic}
+.sec .shot.phone img{max-width:340px;margin:0 auto}.sec .shot.phone figcaption{text-align:center}
