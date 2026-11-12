@@ -64,7 +64,10 @@ window.KT = [
             "p": "All portfolio data is server state cached by React Query; the browser itself keeps only tokens, currency and the selected family member. One axios client carries every call, so most incidents trace back to it. The diagram shows how the pieces connect."
           },
           {
-            "p": "<i>[Diagram: app architecture · 6 components]</i>"
+            "img": {
+              "src": "screenshots/from-pdf/architecture.png",
+              "cap": "App architecture · 6 components"
+            }
           }
         ]
       },
@@ -554,6 +557,931 @@ window.KT = [
           },
           {
             "p": "<b>Family-member selection.</b> The selected member is stored in sessionStorage (<code>selectedUserId</code> and related keys), not in the URL. <code>NavigationSync</code> restores it after a refresh and when the tab becomes visible again. Logout clears these keys; stale keys would show the next user the wrong profile."
+          }
+        ]
+      },
+      {
+        "title": "Screens and URLs",
+        "parts": [
+          {
+            "p": "The app is hosted at <code>https://xirr.ai</code>; each page below is a path on that host. Login is the root path: <code>/login</code> is not a defined route and falls through to <code>RoleBasedRedirect</code>. Purposes are read from the code, so confirm the wording with the product owner."
+          },
+          {
+            "table": {
+              "head": [
+                "#",
+                "Page",
+                "URL",
+                "Purpose",
+                "Main components"
+              ],
+              "rows": [
+                [
+                  "1",
+                  "Login",
+                  "<code>https://xirr.ai/</code>",
+                  "Sign in with username and password; stores tokens and routes by role. Password reset starts at <code>/forgot-password</code>.",
+                  "<code>LoginCard</code>"
+                ],
+                [
+                  "2",
+                  "Welcome",
+                  "<code>https://xirr.ai/welcome</code>",
+                  "Animated greeting after login, then redirects: client to <code>/overview</code>, admin to <code>/admin-dashboard</code>, CSM to <code>/admin/clients</code>.",
+                  "<code>WelcomePage</code> (reads the name via <code>clientsMeUrl</code>)"
+                ],
+                [
+                  "3",
+                  "Overview",
+                  "<code>https://xirr.ai/overview</code>",
+                  "Family / profile card with a preview of total portfolio value, change from last month and strategy XIRR; INR / USD toggle. Admins see the same page read-only at <code>/client/:clientId/overview</code>.",
+                  "<code>OverviewPage</code>, <code>Header</code>, <code>AdminViewBanner</code>"
+                ],
+                [
+                  "4",
+                  "Dashboard",
+                  "<code>https://xirr.ai/dashboard</code>",
+                  "Dashboard of allocation by strategy, portfolio and stock performance (best, worst, top gainers and losers), latest updates and a performance graph.",
+                  "<code>Dasboardv3</code>, <code>AssetStrategiesChart</code>, <code>PortfolioDashboard</code>, <code>StockDashboard</code>, <code>Updates</code>, <code>GraphComponent</code>, <code>SidebarNav</code>"
+                ],
+                [
+                  "5",
+                  "Strategies",
+                  "<code>https://xirr.ai/strategies</code>",
+                  "Per-strategy holdings, gain / loss and dividends, with a stock drill- down (Transactions, Returns, Compare, Announcements).",
+                  "<code>RiskCompassStrategy</code> (~4.6k lines), <code>GraphComponent</code>, strategy hooks in <code>useApi.ts</code>"
+                ],
+                [
+                  "6",
+                  "Upload",
+                  "<code>https://xirr.ai/upload</code>",
+                  "Upload a transaction or contract- note file (<code>.csv</code>, <code>.xlsx</code>), download the template and review the extracted data.",
+                  "<code>FileUploadComponent</code>"
+                ],
+                [
+                  "7",
+                  "Transactions",
+                  "<code>https://xirr.ai/transactions</code>",
+                  "Manual transaction entry form: Asset Details, Transaction Details, Taxes &amp; Other Charges.",
+                  "<code>TransactionForm</code>"
+                ],
+                [
+                  "8",
+                  "News &amp; Events",
+                  "<code>https://xirr.ai/news-events</code>",
+                  "Feed of announcements, corporate actions, dividends and transactions for the client's holdings.",
+                  "<code>Updates</code> (<code>AlertsFeed</code>)"
+                ],
+                [
+                  "9",
+                  "Reports",
+                  "<code>https://xirr.ai/reports</code> (also <code>/report</code>)",
+                  "Generate and download Portfolio, Gain/Loss, Dividend, Tax Statement and Transaction reports, and month-end reports. Files come from the backend.",
+                  "<code>ReportsPage</code>"
+                ],
+                [
+                  "10",
+                  "Research",
+                  "<code>https://xirr.ai/research</code>",
+                  "Investigo research reader: search, feed, metrics and agent panels, company reader.",
+                  "<code>InvestigoPage</code>, <code>ResearchPage</code> (Home, Reader, Shell, Navigation)"
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "title": "Screenshots and component guide",
+        "parts": [
+          {
+            "p": "Every screen below shows its screenshot, what the screen is for, and what each visible component does. Screenshots come from a test account. On all investor pages except Login, Welcome and Research the shared shell is: the sidebar (<code>SidebarNav.tsx</code>, icons in order Overview, Dashboard, Strategies, Upload, Reports, News &amp; Events, Research, then Sign Out), the header (<code>Header.tsx</code>: profile avatar and name, Swap profile, Currency dropdown, notification bell) and the footer (<code>Footer.tsx</code>: Terms of Service, Privacy Policy, Disclaimer, contact email, copyright)."
+          },
+          {
+            "h": "1. Login: <code>https://xirr.ai/</code>"
+          },
+          {
+            "img": {
+              "src": "screenshots/screenshots/login.png",
+              "cap": "Login, credentials being entered"
+            }
+          },
+          {
+            "p": "<b>Screen purpose:</b> Entry point of the portal. The user enters a username and password and signs in; a \"Forgot Password?\" link starts the reset flow."
+          },
+          {
+            "p": "<b>Components</b> (<code>LoginCard.tsx</code>):"
+          },
+          {
+            "ul": [
+              "XIRR logo: brand mark at the top of the card.",
+              "Title and subtitle (\"Login / Enter your credentials\"): tells the user what to do.",
+              "Username field with user icon: login identifier.",
+              "Password field with lock icon and show/hide eye toggle (masked): secret input.",
+              "Sign In button: submits the credentials.",
+              "\"Forgot Password?\" link: opens the password reset page (<code>ForgotPasswordCard.tsx</code>, route <code>/forgot-password</code>).",
+              "Decorative dots and ring background: styling only.",
+              "Sidebar, header, bell and currency dropdown are not shown before login."
+            ],
+            "ordered": false
+          },
+          {
+            "h": "2. Welcome: <code>https://xirr.ai/welcome</code>"
+          },
+          {
+            "img": {
+              "src": "screenshots/screenshots/Welcome.png",
+              "cap": "Welcome splash"
+            }
+          },
+          {
+            "p": "<b>Screen purpose:</b> Short animated greeting shown right after login. It shows the profile's welcome name, then moves on automatically (investors go to <code>/overview</code>) without any user action."
+          },
+          {
+            "p": "<b>Components</b> (<code>WelcomePage.tsx</code>):"
+          },
+          {
+            "ul": [
+              "\"Welcome to\" animated text: greeting line.",
+              "XIRR logo: brand mark.",
+              "Welcome name with underline accent: personalised greeting for the logged-in family profile.",
+              "Corner frame lines and soft gradient background: styling only.",
+              "No sidebar, header or buttons on this screen."
+            ],
+            "ordered": false
+          },
+          {
+            "h": "3. Overview: <code>https://xirr.ai/overview</code>"
+          },
+          {
+            "img": {
+              "src": "screenshots/screenshots/Overview.png",
+              "cap": "Overview, profile / family selection view"
+            }
+          },
+          {
+            "p": "<b>Screen purpose:</b> Landing view after the welcome splash. The user sees the family group card and its member profile card, with a preview of total portfolio value, and picks who to view. The preview card hints that clicking it opens the detailed view."
+          },
+          {
+            "p": "<b>Components</b> (<code>OverviewPage.tsx</code>, route <code>/overview</code>, component name <code>FinancialDashboard</code>):"
+          },
+          {
+            "ul": [
+              "XIRR logo (top left): brand mark.",
+              "Currency dropdown (top right): switches the display currency (<code>Header.tsx</code> via <code>CurrencyContext</code>).",
+              "Notification bell (top right): opens alerts and notifications.",
+              "Family group card (group name and large initials circle): represents the family group in the family tree.",
+              "Tilted portfolio preview card: member name, total portfolio value, change from last month, and a strategy mini-card with XIRR, Sharpe ratio and a benchmark comparison line."
+            ],
+            "ordered": false
+          },
+          {
+            "h": "4. Dashboard: <code>https://xirr.ai/dashboard</code>"
+          },
+          {
+            "img": {
+              "src": "screenshots/screenshots/Dashboard1.png",
+              "cap": "Dashboard, top of page"
+            }
+          },
+          {
+            "p": "<b>Screen purpose:</b> Main portfolio summary. The user sees total portfolio value, the month's gain, a performance line chart and the top strategies, then scrolls for details."
+          },
+          {
+            "p": "<b>Components</b> (<code>Dasboardv3.tsx</code>):"
+          },
+          {
+            "ul": [
+              "Sidebar (Dashboard icon active): navigation (<code>SidebarNav.tsx</code>).",
+              "Header with profile, Swap profile, Currency dropdown and bell (<code>Header.tsx</code>).",
+              "Total Portfolio block (value, Month's Gain amount and percent badge): headline numbers (<code>PortfolioDashboard.tsx</code>).",
+              "Portfolio value line chart: value over time (<code>PortfolioDashboard.tsx</code>).",
+              "Top Strategies list (strategy name with XIRR): best strategies at a glance (<code>PortfolioDashboard.tsx</code>).",
+              "Snapshot card: allocation by asset type (<code>AssetStrategiesChart.tsx</code>).",
+              "Strategy detail card (name, XIRR / Sharpe Ratio / Invested / Current Value tiles, Benchmark dropdown, chart): <code>GraphComponent.tsx</code> (<code>InvestmentDashboard</code>)."
+            ],
+            "ordered": false
+          },
+          {
+            "img": {
+              "src": "screenshots/screenshots/Dashboard2.png",
+              "cap": "Dashboard, scrolled to Snapshot and strategy chart"
+            }
+          },
+          {
+            "p": "<b>Screen purpose:</b> Shows how the portfolio is allocated and how a strategy compares with its benchmark over time."
+          },
+          {
+            "p": "<b>Components:</b>"
+          },
+          {
+            "ul": [
+              "Snapshot card: single bar with the asset class, share percentage and strategy count (<code>AssetStrategiesChart.tsx</code>).",
+              "Strategy card with four metric tiles (XIRR, Sharpe Ratio, Invested, Current Value): key numbers (<code>GraphComponent.tsx</code>, <code>MetricCard</code>).",
+              "Benchmark dropdown and legend (strategy vs index): chooses and labels the comparison line (<code>GraphComponent.tsx</code>).",
+              "NAV line chart with date axis: strategy NAV against benchmark NAV over time.",
+              "Tab strip (Dividend, Transaction, Corp. Action, Announcement) at the bottom: alert categories (<code>Updates2.tsx</code>).",
+              "Sidebar: navigation. Header is scrolled out of view."
+            ],
+            "ordered": false
+          },
+          {
+            "img": {
+              "src": "screenshots/screenshots/Dashboard3.png",
+              "cap": "Dashboard, scrolled to alerts and Market Movers"
+            }
+          },
+          {
+            "p": "<b>Screen purpose:</b> Shows recent portfolio events and the best and worst movers among the holdings."
+          },
+          {
+            "p": "<b>Components:</b>"
+          },
+          {
+            "ul": [
+              "Alerts card with tabs Dividend / Transaction / Corp. Action / Announcement (Dividend active): recent events for the holdings (<code>Updates2.tsx</code>, <code>DividendRow</code>).",
+              "Dividend rows (company, dividend type and rate, record date, amount, ticker): individual dividend alerts.",
+              "\"Showing 3 of 23 dividends\" text and \"Show more\" button: pagination of the list.",
+              "Market Movers card with four tables (Best Performers, Worst Performers, Today's Top Gainers, Today's Top Losers): holding-level movers (<code>StockDashboard.tsx</code>: <code>BestPerformer</code>, <code>WorstPerformer</code>, <code>TopGainer</code>, <code>TopLoser</code>)."
+            ],
+            "ordered": false
+          },
+          {
+            "h": "5. Strategies: <code>https://xirr.ai/strategies</code>"
+          },
+          {
+            "img": {
+              "src": "screenshots/screenshots/Strategy1.png",
+              "cap": "Strategies, top of page"
+            }
+          },
+          {
+            "p": "<b>Screen purpose:</b> Detailed view of one investment strategy. The user compares the portfolio's risk and return numbers against the NIFTY 50 benchmark and sees the NAV chart before reading the holdings."
+          },
+          {
+            "p": "<b>Components</b> (<code>RiskCompassStrategy.tsx</code>):"
+          },
+          {
+            "ul": [
+              "Sidebar (Strategies icon active) and header (profile, Swap profile, Currency, bell).",
+              "Strategy selector (dropdown with the strategy's full-name chip): chooses which strategy to show.",
+              "\"Back to Dashboard\" link: returns to <code>/dashboard</code>.",
+              "Metrics table (XIRR, Sharpe Ratio, Drawdown, Current NAV for Portfolio and NIFTY 50): risk and return comparison (<code>GraphComponent.tsx</code>, <code>MetricTable</code>).",
+              "Benchmark dropdown, legend and NAV line chart: strategy NAV against the benchmark over time.",
+              "Statement toggle (Holding Statement / Gain/Loss Statement): switches the table below.",
+              "\"Add Transactions\" button: opens the transaction entry flow.",
+              "\"Download Report\" button: downloads the statement.",
+              "Holding summary card (number of instruments, gainers and losers, Total Investment, Current Value, day change, Unrealized P&amp;L): summary of the holdings."
+            ],
+            "ordered": false
+          },
+          {
+            "img": {
+              "src": "screenshots/screenshots/Strategy2.png",
+              "cap": "Strategies, Holding Statement table"
+            }
+          },
+          {
+            "p": "<b>Screen purpose:</b> Lists each stock held in the strategy with price, day change, quantity, invested amount, current value, return and XIRR so the user can see what is working."
+          },
+          {
+            "p": "<b>Components:</b>"
+          },
+          {
+            "ul": [
+              "Statement toggle, \"Add Transactions\" and \"Download Report\" buttons.",
+              "Summary card: instruments count, gainers and losers, Total Investment, Current Value, day gain, Unrealized P&amp;L.",
+              "Holdings table (Stock Name, Live Price, Day's Gain / % Change, Quantity / Cost per Unit, Invested Amt / Weight, Current Value / Weight, Return / % Returns, XIRR, Graph (3 Months)): sortable column headers; one row per stock with an expand arrow and a document icon; <code>MiniGraph</code> sparkline per row.",
+              "Table scrollbar: scrolls the rows.",
+              "Footer: Terms of Service, Privacy Policy, Disclaimer, contact email, copyright."
+            ],
+            "ordered": false
+          },
+          {
+            "img": {
+              "src": "screenshots/screenshots/Strategy-transaction.png",
+              "cap": "Strategies, one holding expanded, Transactions tab"
+            }
+          },
+          {
+            "p": "<b>Screen purpose:</b> Shows the buy and sell history behind a single holding."
+          },
+          {
+            "p": "<b>Components:</b>"
+          },
+          {
+            "ul": [
+              "Summary card and holdings table header (as above).",
+              "Expanded row with tab bar: Transactions, Dividend History, Announcements, Returns, Compare (Transactions active): <code>RiskCompassStrategy.tsx</code>.",
+              "Transaction table (Date, Type badge, Quantity / Cost per Unit, Charges, Net Amount, Returns / % Returns, Holding Units): <code>TransactionHistory</code>.",
+              "Next holding row (collapsed) below."
+            ],
+            "ordered": false
+          },
+          {
+            "img": {
+              "src": "screenshots/screenshots/Strategy-dividend.png",
+              "cap": "Strategies, holding, Dividend History tab"
+            }
+          },
+          {
+            "p": "<b>Screen purpose:</b> Shows dividends received on this holding."
+          },
+          {
+            "p": "<b>Components:</b>"
+          },
+          {
+            "ul": [
+              "Same expanded-row tab bar (Dividend History active).",
+              "Dividend table (Record Date, Dividend Rate, Quantity, Amount Received with info icon): <code>DividendHistory</code>."
+            ],
+            "ordered": false
+          },
+          {
+            "img": {
+              "src": "screenshots/screenshots/Strategy-announcements.png",
+              "cap": "Strategies, holding, Announcements tab"
+            }
+          },
+          {
+            "p": "<b>Screen purpose:</b> Shows company filings for the holding with a short summary and a link to the source."
+          },
+          {
+            "p": "<b>Components:</b>"
+          },
+          {
+            "ul": [
+              "Same expanded-row tab bar (Announcements active).",
+              "Announcements table (Date, Category, Summary with its own scrollbar, Source URL \"View\" link): <code>Announcements</code>.",
+              "Table scrollbar: scrolls the rows."
+            ],
+            "ordered": false
+          },
+          {
+            "img": {
+              "src": "screenshots/screenshots/Strategy-returns.png",
+              "cap": "Strategies, holding, Returns tab"
+            }
+          },
+          {
+            "p": "<b>Screen purpose:</b> Shows the stock's return over different periods."
+          },
+          {
+            "p": "<b>Components:</b>"
+          },
+          {
+            "ul": [
+              "Same expanded-row tab bar (Returns active).",
+              "Five return tiles (1-Day, 1-Week, 1-Month, 3-Months, 1-Year; green for positive, red for negative): <code>Returns</code>."
+            ],
+            "ordered": false
+          },
+          {
+            "img": {
+              "src": "screenshots/screenshots/Strategy-compare.png",
+              "cap": "Strategies, holding, Compare tab"
+            }
+          },
+          {
+            "p": "<b>Screen purpose:</b> Compares the stock against market indices on XIRR, Sharpe ratio and drawdown, with a chart."
+          },
+          {
+            "p": "<b>Components:</b>"
+          },
+          {
+            "ul": [
+              "Same expanded-row tab bar (Compare active).",
+              "\"Comparison Analysis\" heading with the stock name.",
+              "Comparison table (Stock Name, XIRR (%), Sharpe Ratio, Drawdown (%), rows for the stock and indices): <code>CompareTab</code>.",
+              "Multi-line comparison chart with date axis and legend: stock against indices over time."
+            ],
+            "ordered": false
+          },
+          {
+            "img": {
+              "src": "screenshots/screenshots/Strategy-Gainloss.png",
+              "cap": "Strategies, Gain/Loss Statement"
+            }
+          },
+          {
+            "p": "<b>Screen purpose:</b> Shows realised profit and loss on stocks that were sold."
+          },
+          {
+            "p": "<b>Components:</b>"
+          },
+          {
+            "ul": [
+              "Statement toggle (Gain/Loss Statement active), \"Add Transactions\" and \"Download Report\" buttons.",
+              "Summary card (Total Transactions, gainers and losers, Total Invested, Total Sale Value, Total Realized Gain and percent).",
+              "Gain/Loss table (Stock Name, Qty, Purchase, Pur Value, Sale, Sale Value, Realized Gain, Dividend Received with info icon, XIRR %): sortable; rows are expandable.",
+              "NAV chart axis labels and Current NAV tiles at the top edge: page is scrolled partway."
+            ],
+            "ordered": false
+          },
+          {
+            "img": {
+              "src": "screenshots/screenshots/Strategy-GL-Transaction.png",
+              "cap": "Strategies, Gain/Loss, row expanded, Transactions"
+            }
+          },
+          {
+            "p": "<b>Screen purpose:</b> Shows the purchase and sale lines behind one realised gain."
+          },
+          {
+            "p": "<b>Components:</b>"
+          },
+          {
+            "ul": [
+              "Gain/Loss summary card and table header.",
+              "Expanded row sub-tabs (Transactions active, Dividend History).",
+              "Transaction detail table (Stock Name, Qty, Purchase with date, Pur Value, Sale with date, Sale Value, Realized Gain, Dividend Received, XIRR %)."
+            ],
+            "ordered": false
+          },
+          {
+            "img": {
+              "src": "screenshots/screenshots/Strategy-GL-Dividend.png",
+              "cap": "Strategies, Gain/Loss, row expanded, Dividend History (empty)"
+            }
+          },
+          {
+            "p": "<b>Screen purpose:</b> Shows dividends received on a sold stock; here there are none."
+          },
+          {
+            "p": "<b>Components:</b>"
+          },
+          {
+            "ul": [
+              "Expanded row sub-tabs (Dividend History active).",
+              "Dividend table (Record Date, Dividend Rate, Quantity, Amount Received) with the empty-state message \"No dividend history available\"."
+            ],
+            "ordered": false
+          },
+          {
+            "h": "6. Upload: <code>https://xirr.ai/upload</code>"
+          },
+          {
+            "img": {
+              "src": "screenshots/screenshots/Upload.png",
+              "cap": "Upload, file upload"
+            }
+          },
+          {
+            "p": "<b>Screen purpose:</b> Lets the user add transactions by uploading a statement file, or choose to enter them manually or download a template first."
+          },
+          {
+            "p": "<b>Components</b> (<code>FileUploadComponent.tsx</code>):"
+          },
+          {
+            "ul": [
+              "Sidebar (Upload icon active) and header (profile, Swap profile, Currency, bell).",
+              "\"Back to Strategies\" link: returns to <code>/strategies</code>.",
+              "Drag-and-drop zone (cloud upload icon, \"Drag and drop files here\", supported types and size note): drop area.",
+              "\"Upload Files\" button: opens the file chooser.",
+              "\"or\" divider and \"Enter manually\" button: goes to the manual transaction form (<code>/transactions</code>).",
+              "\"Download template\" link: downloads the upload template."
+            ],
+            "ordered": false
+          },
+          {
+            "h": "7. Transactions: <code>https://xirr.ai/transactions</code>"
+          },
+          {
+            "img": {
+              "src": "screenshots/screenshots/Transaction.png",
+              "cap": "Transactions, manual entry form"
+            }
+          },
+          {
+            "p": "<b>Screen purpose:</b> Lets the user add one buy or sell transaction by hand, entering the asset, trade details and charges."
+          },
+          {
+            "p": "<b>Components</b> (<code>TransactionForm.tsx</code>):"
+          },
+          {
+            "ul": [
+              "Sidebar and \"Back to Upload\" link.",
+              "Asset Details section: Investment Strategy dropdown (\"Choose strategy\") and ISIN / name search field.",
+              "Transaction Details section: Transaction Type dropdown (Buy), Transaction Date picker, Quantity, Price Per Unit, Brokerage Fee.",
+              "Taxes &amp; Other Charges section: GST Charges, STT Charges, Other Charges fields.",
+              "Cancel button and Submit Transaction button (disabled until the required fields are filled)."
+            ],
+            "ordered": false
+          },
+          {
+            "h": "8. News &amp; Events: <code>https://xirr.ai/news-events</code>"
+          },
+          {
+            "img": {
+              "src": "screenshots/screenshots/News&Events-Dividend.png",
+              "cap": "News &amp; Events, Dividend tab"
+            }
+          },
+          {
+            "p": "<b>Screen purpose:</b> Shows recent alerts for the holdings, starting with dividends declared. The user can filter by strategy and search."
+          },
+          {
+            "p": "<b>Components</b> (<code>Updates.tsx</code>):"
+          },
+          {
+            "ul": [
+              "Sidebar (News &amp; Events icon active) and header (profile, Swap profile, Currency, bell).",
+              "\"Back to Dashboard\" link.",
+              "Strategy filter (\"All Strategies\" dropdown).",
+              "Category tabs (Dividend active, Transaction, Corp. Action, Announcement).",
+              "Search box with refresh icon (\"Search alerts...\"): filters or reloads the list.",
+              "Alert rows (company and event title, description, record date, amount, ticker): each row is one dividend alert (<code>AlertRow</code>)."
+            ],
+            "ordered": false
+          },
+          {
+            "img": {
+              "src": "screenshots/screenshots/News&Events-Transaction.png",
+              "cap": "News &amp; Events, Transaction tab (empty)"
+            }
+          },
+          {
+            "p": "<b>Screen purpose:</b> Shows alerts about the user's transactions; there are none for the current filters."
+          },
+          {
+            "p": "<b>Components:</b>"
+          },
+          {
+            "ul": [
+              "Strategy filter, category tabs (Transaction active), search box with refresh.",
+              "Empty-state message \"No alerts found for your filters\" (<code>EmptyState</code>).",
+              "Footer: Terms, Privacy, Disclaimer, contact email, copyright."
+            ],
+            "ordered": false
+          },
+          {
+            "img": {
+              "src": "screenshots/screenshots/News&Events-Corp.png",
+              "cap": "News &amp; Events, Corp. Action tab"
+            }
+          },
+          {
+            "p": "<b>Screen purpose:</b> Lists corporate actions (here stock splits) that affect the holdings."
+          },
+          {
+            "p": "<b>Components:</b>"
+          },
+          {
+            "ul": [
+              "Strategy filter, category tabs (Corp. Action active), search box with refresh.",
+              "Corporate-action rows (company and action title, split description and ex-date).",
+              "Footer."
+            ],
+            "ordered": false
+          },
+          {
+            "img": {
+              "src": "screenshots/screenshots/News&Events-Announcements.png",
+              "cap": "News &amp; Events, Announcement tab"
+            }
+          },
+          {
+            "p": "<b>Screen purpose:</b> Lists company announcements and filings for the holdings; the user scans the headlines."
+          },
+          {
+            "p": "<b>Components:</b>"
+          },
+          {
+            "ul": [
+              "Strategy filter, category tabs (Announcement active), search box with refresh.",
+              "Announcement rows (company name and short subject): in the code, clicking a row opens a detail popup (<code>AnnouncementModal</code> in <code>Updates2.tsx</code>, <code>PopupModal</code> in <code>Updates.tsx</code>); the popup is not shown in this screenshot."
+            ],
+            "ordered": false
+          },
+          {
+            "h": "9. Reports: <code>https://xirr.ai/reports</code>"
+          },
+          {
+            "img": {
+              "src": "screenshots/screenshots/Reports.png",
+              "cap": "Reports"
+            }
+          },
+          {
+            "p": "<b>Screen purpose:</b> Lets the user download portfolio reports in a chosen format for chosen members."
+          },
+          {
+            "p": "<b>Components</b> (<code>ReportsPage.tsx</code>):"
+          },
+          {
+            "ul": [
+              "Sidebar (Reports icon active) and header.",
+              "\"Back to Strategies\" link.",
+              "Reports container with heading.",
+              "Portfolio Report card: description, period dropdown (\"Current\"), format dropdown (Excel), Members dropdown (<code>ReportCard</code>).",
+              "Corpus Report (Ledger) card: description, format dropdown (Excel), Members dropdown.",
+              "Dividend Report card: description, format dropdown (Excel), Members dropdown.",
+              "Gain/Loss Report card: description, year dropdown (\"Select a Year\"), format dropdown (Excel), Members dropdown.",
+              "The download action is not visible in this view."
+            ],
+            "ordered": false
+          },
+          {
+            "h": "10. Research: <code>https://xirr.ai/research</code>"
+          },
+          {
+            "p": "Research pages (<code>ResearchPage.tsx</code>, wrapped by <code>InvestigoPage.tsx</code>) show the sidebar only, with no portal header. Every company screen shares the top bar (<code>HomeTopBar.tsx</code>: Investigo.ai title, company search box, Snapshot / Story / Feed switch) and a left panel with the company name (<code>HomeHeader.tsx</code>) and the Quick Take card (<code>QuickTake.tsx</code>: headline, sector line, summary, scrollable Bull Case and Bear Case boxes). Two companies are shown below with the same set of screens."
+          },
+          {
+            "img": {
+              "src": "screenshots/from-pdf/company1-snapshot.png",
+              "cap": "Research, company 1, Snapshot tab (top)"
+            }
+          },
+          {
+            "p": "<b>Screen purpose:</b> One-screen factsheet for a company: price, market cap, 52-week range, price chart and performance."
+          },
+          {
+            "p": "<b>Components:</b>"
+          },
+          {
+            "ul": [
+              "Top bar: Investigo.ai title, \"Search companies...\" box, Snapshot (active) / Story / Feed switch.",
+              "Company name and Quick Take card.",
+              "Company header (NSE symbol, ISIN, cap-size and sector chips): identifies the stock (<code>HomeHeader.tsx</code>).",
+              "Price block (price, day change badge, date and currency note), Market Cap and 52- week low / high slider (<code>MetricsPanel.tsx</code>).",
+              "Price &amp; Valuation chart with metric tabs (Price, PE, EV/EBITDA, Price to Sales, Price to Book): picks which series to chart.",
+              "Price Performance list (1 Day to 1 Year, green or red values)."
+            ],
+            "ordered": false
+          },
+          {
+            "img": {
+              "src": "screenshots/from-pdf/company1-snapshot2.png",
+              "cap": "Research, company 1, Snapshot tab (scrolled)"
+            }
+          },
+          {
+            "p": "<b>Screen purpose:</b> Shows key financial ratios, valuation range and shareholding mix."
+          },
+          {
+            "p": "<b>Components:</b>"
+          },
+          {
+            "ul": [
+              "Same top bar and left panel.",
+              "Comprehensive Financial Metrics tiles (P/E, ROE, ROCE, OPM, Dividend Yield, Debt to Equity).",
+              "Valuation panel with tabs (P/E, EV/EBITDA, Price to Sales, Price to Book): current value, 5-year median, low and high, and a range slider.",
+              "Shareholding Pattern donut (market cap in the centre, legend Promoters / Institutions / Retail / Others with percentages) and \"Know more\" button: ownership split (<code>MetricsPanel.tsx</code>)."
+            ],
+            "ordered": false
+          },
+          {
+            "img": {
+              "src": "screenshots/from-pdf/company1-story.png",
+              "cap": "Research, company 1, Story tab (intro)"
+            }
+          },
+          {
+            "p": "<b>Screen purpose:</b> Plain-language introduction to the company with headline financials."
+          },
+          {
+            "p": "<b>Components:</b>"
+          },
+          {
+            "ul": [
+              "Top bar (Story active) and Quick Take panel.",
+              "Headline line and explanatory paragraph in a card.",
+              "Four stat tiles (Revenue TTM, PAT TTM, EBITDA Margin, Market Price): <code>StatTiles.tsx</code>.",
+              "\"SCROLL\" hint with down arrow: more content below."
+            ],
+            "ordered": false
+          },
+          {
+            "img": {
+              "src": "screenshots/from-pdf/company1-act-wheel.png",
+              "cap": "Research, company 1, Story tab (act wheel)"
+            }
+          },
+          {
+            "p": "<b>Screen purpose:</b> Navigation wheel to the seven story chapters (acts) of the company report; clicking a node opens the chapter reader."
+          },
+          {
+            "p": "<b>Components:</b>"
+          },
+          {
+            "ul": [
+              "Centre node with the company name (hub) and seven numbered nodes I to VII (Who Are You?, Show Me the Money, What's Happening Now?, Who's Behind This?, What Could Go Wrong?, What's Next?, The Verdict): <code>OrbitNavigation.tsx</code>.",
+              "Tooltip \"What's Happening Now?\" over node III (hover state).",
+              "Top bar and Quick Take panel."
+            ],
+            "ordered": false
+          },
+          {
+            "img": {
+              "src": "screenshots/from-pdf/company1-filings.png",
+              "cap": "Research, company 1, Feed tab, Announcements &amp; Filings"
+            }
+          },
+          {
+            "p": "<b>Screen purpose:</b> Shows exchange filings for the company with bullet summaries; the user expands an item to read the points and open the source."
+          },
+          {
+            "p": "<b>Components:</b>"
+          },
+          {
+            "ul": [
+              "Feed sub-tabs (Announcements &amp; Filings active, News, X): <code>FeedPanel.tsx</code>.",
+              "Filing list (exchange badge NSE or BSE, title, date, expand arrow); first item expanded with bullet summary and \"SOURCE\" link.",
+              "Scrollable list with its own scrollbar.",
+              "Top bar and Quick Take panel."
+            ],
+            "ordered": false
+          },
+          {
+            "img": {
+              "src": "screenshots/from-pdf/company1-news.png",
+              "cap": "Research, company 1, Feed tab, News"
+            }
+          },
+          {
+            "p": "<b>Screen purpose:</b> Shows press headlines about the company with publisher and date."
+          },
+          {
+            "p": "<b>Components:</b>"
+          },
+          {
+            "ul": [
+              "Feed sub-tabs (News active).",
+              "News rows (PRESS badge, headline, publisher and date); scrollable.",
+              "The URL at the bottom is the browser status bar while hovering a link, not part of the app."
+            ],
+            "ordered": false
+          },
+          {
+            "img": {
+              "src": "screenshots/from-pdf/company1-x.png",
+              "cap": "Research, company 1, Feed tab, X"
+            }
+          },
+          {
+            "p": "<b>Screen purpose:</b> Shows posts from X (social) accounts about the company, summarised."
+          },
+          {
+            "p": "<b>Components:</b>"
+          },
+          {
+            "ul": [
+              "Feed sub-tabs (X active).",
+              "Post rows with source badge, headline and date; first item expanded with bullet points and \"SOURCE\" link; scrollable."
+            ],
+            "ordered": false
+          },
+          {
+            "img": {
+              "src": "screenshots/screenshots/Research-Snapshot.png",
+              "cap": "Research, company 2, Snapshot tab (top)"
+            }
+          },
+          {
+            "p": "<b>Screen purpose:</b> The same factsheet for a second company. A back arrow lets the user return to the previous screen."
+          },
+          {
+            "p": "<b>Components:</b>"
+          },
+          {
+            "ul": [
+              "Top bar with a back arrow button next to the Investigo.ai title, search box, Snapshot / Story / Feed switch.",
+              "Company name and Quick Take card with Bull Case and Bear Case.",
+              "Header chips, price, change badge, Market Cap, 52-week slider, Price &amp; Valuation chart with metric tabs, Price Performance list."
+            ],
+            "ordered": false
+          },
+          {
+            "img": {
+              "src": "screenshots/screenshots/Research-snapshot2.png",
+              "cap": "Research, company 2, Snapshot tab (scrolled)"
+            }
+          },
+          {
+            "p": "<b>Screen purpose:</b> Financial ratios, valuation and shareholding for the second company."
+          },
+          {
+            "p": "<b>Components:</b>"
+          },
+          {
+            "ul": [
+              "Same as company 1: metric tiles, valuation panel, shareholding donut with legend and \"Know more\" button."
+            ],
+            "ordered": false
+          },
+          {
+            "img": {
+              "src": "screenshots/screenshots/Research-story.png",
+              "cap": "Research, company 2, Story tab (intro)"
+            }
+          },
+          {
+            "p": "<b>Screen purpose:</b> Plain-language introduction for the second company."
+          },
+          {
+            "p": "<b>Components:</b>"
+          },
+          {
+            "ul": [
+              "Same as company 1: headline, narrative card, four stat tiles, \"SCROLL\" hint."
+            ],
+            "ordered": false
+          },
+          {
+            "img": {
+              "src": "screenshots/screenshots/Research-story2.png",
+              "cap": "Research, company 2, Story tab (act wheel)"
+            }
+          },
+          {
+            "p": "<b>Screen purpose:</b> Chapter navigation wheel for the second company."
+          },
+          {
+            "p": "<b>Components:</b>"
+          },
+          {
+            "ul": [
+              "Same as company 1, with no hover tooltip."
+            ],
+            "ordered": false
+          },
+          {
+            "img": {
+              "src": "screenshots/screenshots/Research-Feed-Announcements.png",
+              "cap": "Research, company 2, Feed tab, Announcements &amp; Filings"
+            }
+          },
+          {
+            "p": "<b>Screen purpose:</b> Lists exchange filings for the second company; none is expanded."
+          },
+          {
+            "p": "<b>Components:</b>"
+          },
+          {
+            "ul": [
+              "Same as company 1, all rows collapsed."
+            ],
+            "ordered": false
+          },
+          {
+            "img": {
+              "src": "screenshots/screenshots/Research-feed-news.png",
+              "cap": "Research, company 2, Feed tab, News"
+            }
+          },
+          {
+            "p": "<b>Screen purpose:</b> Press headlines for the second company (some in other languages)."
+          },
+          {
+            "p": "<b>Components:</b>"
+          },
+          {
+            "ul": [
+              "Same as company 1."
+            ],
+            "ordered": false
+          },
+          {
+            "img": {
+              "src": "screenshots/screenshots/Research-feed-x.png",
+              "cap": "Research, company 2, Feed tab, X"
+            }
+          },
+          {
+            "p": "<b>Screen purpose:</b> Social and press-style posts for the second company."
+          },
+          {
+            "p": "<b>Components:</b>"
+          },
+          {
+            "ul": [
+              "Same as company 1, no item expanded; source badges are publisher names."
+            ],
+            "ordered": false
+          },
+          {
+            "img": {
+              "src": "screenshots/screenshots/Research-story-act.png",
+              "cap": "Research, chapter reader (Act I, Who Are You?)"
+            }
+          },
+          {
+            "p": "<b>Screen purpose:</b> Full-page chapter reader for the first story act: origin of the company, key facts and milestones. The user switches chapters on the left and acts on the bottom rail."
+          },
+          {
+            "p": "<b>Components</b> (<code>ShellView.tsx</code>):"
+          },
+          {
+            "ul": [
+              "Top bar (<code>Topbar.tsx</code>): Investigo.ai title with the company story label, act number and title, close (x) button.",
+              "\"ALL ACTS\" button: returns to the act wheel.",
+              "Chapter tab rail (Origin &amp; DNA, Business Model, What They Own &amp; Control, Market Position &amp; Competition): <code>TabRail.tsx</code>.",
+              "Reader body: chapter title, summary quote, fact cards (company name, founding year, sector, industry, HQ, tagline, order book value) and a Key Milestones table: <code>ReaderBody.tsx</code>.",
+              "Act rail with roman numerals I to VII at the bottom left: jump between acts (<code>ActRail.tsx</code>).",
+              "Sidebar (<code>SidebarNav.tsx</code>)."
+            ],
+            "ordered": false
           }
         ]
       },

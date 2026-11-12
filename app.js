@@ -1,7 +1,10 @@
 const D = window.KT, $ = s => document.querySelector(s);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const img = s => s.split("/").map(encodeURIComponent).join("/");
 const parts = ps => (ps || []).map(p =>
   p.p ? `<p>${p.p}</p>` :
+  p.h ? `<h3>${p.h}</h3>` :
+  p.img ? `<figure class="shot"><a href="${img(p.img.src)}" target="_blank" rel="noopener"><img src="${img(p.img.src)}" alt="${esc((p.img.cap || "").replace(/&amp;/g, "&"))}" loading="lazy"></a>${p.img.cap ? `<figcaption>${p.img.cap}</figcaption>` : ""}</figure>` :
   p.ul ? `<${p.ordered ? "ol" : "ul"}>${p.ul.map(i => `<li>${i}</li>`).join("")}</${p.ordered ? "ol" : "ul"}>` :
   p.code ? `<pre>${esc(p.code)}</pre>` :
   p.table ? `<div class="tw"><table>${p.table.head ? `<thead><tr>${p.table.head.map(c => `<th>${c}</th>`).join("")}</tr></thead>` : ""}<tbody>${p.table.rows.map(r => `<tr>${r.map(c => `<td>${c}</td>`).join("")}</tr>`).join("")}</tbody></table></div>` : ""
