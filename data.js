@@ -1190,7 +1190,7 @@ window.KT = [
           {
             "img": {
               "src": "screenshots/from-pdf/company1-snapshot.png",
-              "cap": "Research, company 1, Snapshot tab (top)"
+              "cap": "Research, Apollo Hospitals, Snapshot tab (top)"
             }
           },
           {
@@ -1213,7 +1213,7 @@ window.KT = [
           {
             "img": {
               "src": "screenshots/from-pdf/company1-snapshot2.png",
-              "cap": "Research, company 1, Snapshot tab (scrolled)"
+              "cap": "Research, Apollo Hospitals, Snapshot tab (scrolled)"
             }
           },
           {
@@ -1234,7 +1234,7 @@ window.KT = [
           {
             "img": {
               "src": "screenshots/from-pdf/company1-story.png",
-              "cap": "Research, company 1, Story tab (intro)"
+              "cap": "Research, Apollo Hospitals, Story tab (intro)"
             }
           },
           {
@@ -1255,7 +1255,7 @@ window.KT = [
           {
             "img": {
               "src": "screenshots/from-pdf/company1-act-wheel.png",
-              "cap": "Research, company 1, Story tab (act wheel)"
+              "cap": "Research, Apollo Hospitals, Story tab (act wheel)"
             }
           },
           {
@@ -1275,7 +1275,7 @@ window.KT = [
           {
             "img": {
               "src": "screenshots/from-pdf/company1-filings.png",
-              "cap": "Research, company 1, Feed tab, Announcements &amp; Filings"
+              "cap": "Research, Apollo Hospitals, Feed tab, Announcements &amp; Filings"
             }
           },
           {
@@ -1296,7 +1296,7 @@ window.KT = [
           {
             "img": {
               "src": "screenshots/from-pdf/company1-news.png",
-              "cap": "Research, company 1, Feed tab, News"
+              "cap": "Research, Apollo Hospitals, Feed tab, News"
             }
           },
           {
@@ -1316,7 +1316,7 @@ window.KT = [
           {
             "img": {
               "src": "screenshots/from-pdf/company1-x.png",
-              "cap": "Research, company 1, Feed tab, X"
+              "cap": "Research, Apollo Hospitals, Feed tab, X"
             }
           },
           {
@@ -1335,11 +1335,11 @@ window.KT = [
           {
             "img": {
               "src": "screenshots/screenshots/Research-Snapshot.png",
-              "cap": "Research, company 2, Snapshot tab (top)"
+              "cap": "Research, Larsen &amp; Toubro, Snapshot tab (top)"
             }
           },
           {
-            "p": "<b>Screen purpose:</b> The same factsheet for a second company. A back arrow lets the user return to the previous screen."
+            "p": "<b>Screen purpose:</b> The same Snapshot factsheet, shown here for Larsen &amp; Toubro. A back arrow next to the title returns the user to the previous screen."
           },
           {
             "p": "<b>Components:</b>"
@@ -1355,119 +1355,119 @@ window.KT = [
           {
             "img": {
               "src": "screenshots/screenshots/Research-snapshot2.png",
-              "cap": "Research, company 2, Snapshot tab (scrolled)"
+              "cap": "Research, Larsen &amp; Toubro, Snapshot tab (scrolled)"
             }
           },
           {
-            "p": "<b>Screen purpose:</b> Financial ratios, valuation and shareholding for the second company."
+            "p": "<b>Screen purpose:</b> Financial ratios, valuation and shareholding for Larsen &amp; Toubro."
           },
           {
             "p": "<b>Components:</b>"
           },
           {
             "ul": [
-              "Same as company 1: metric tiles, valuation panel, shareholding donut with legend and \"Know more\" button."
+              "Same as the Apollo Hospitals screen: metric tiles, valuation panel, shareholding donut with legend and \"Know more\" button."
             ],
             "ordered": false
           },
           {
             "img": {
               "src": "screenshots/screenshots/Research-story.png",
-              "cap": "Research, company 2, Story tab (intro)"
+              "cap": "Research, Larsen &amp; Toubro, Story tab (intro)"
             }
           },
           {
-            "p": "<b>Screen purpose:</b> Plain-language introduction for the second company."
+            "p": "<b>Screen purpose:</b> Plain-language introduction to Larsen &amp; Toubro."
           },
           {
             "p": "<b>Components:</b>"
           },
           {
             "ul": [
-              "Same as company 1: headline, narrative card, four stat tiles, \"SCROLL\" hint."
+              "Same as the Apollo Hospitals screen: headline, narrative card, four stat tiles, \"SCROLL\" hint."
             ],
             "ordered": false
           },
           {
             "img": {
               "src": "screenshots/screenshots/Research-story2.png",
-              "cap": "Research, company 2, Story tab (act wheel)"
+              "cap": "Research, Larsen &amp; Toubro, Story tab (act wheel)"
             }
           },
           {
-            "p": "<b>Screen purpose:</b> Chapter navigation wheel for the second company."
+            "p": "<b>Screen purpose:</b> Chapter navigation wheel for Larsen &amp; Toubro."
           },
           {
             "p": "<b>Components:</b>"
           },
           {
             "ul": [
-              "Same as company 1, with no hover tooltip."
+              "Same as the Apollo Hospitals screen, with no hover tooltip."
             ],
             "ordered": false
           },
           {
             "img": {
               "src": "screenshots/screenshots/Research-Feed-Announcements.png",
-              "cap": "Research, company 2, Feed tab, Announcements &amp; Filings"
+              "cap": "Research, Larsen &amp; Toubro, Feed tab, Announcements &amp; Filings"
             }
           },
           {
-            "p": "<b>Screen purpose:</b> Lists exchange filings for the second company; none is expanded."
+            "p": "<b>Screen purpose:</b> Lists exchange filings for Larsen &amp; Toubro; none is expanded."
           },
           {
             "p": "<b>Components:</b>"
           },
           {
             "ul": [
-              "Same as company 1, all rows collapsed."
+              "Same as the Apollo Hospitals screen, all rows collapsed."
             ],
             "ordered": false
           },
           {
             "img": {
               "src": "screenshots/screenshots/Research-feed-news.png",
-              "cap": "Research, company 2, Feed tab, News"
+              "cap": "Research, Larsen &amp; Toubro, Feed tab, News"
             }
           },
           {
-            "p": "<b>Screen purpose:</b> Press headlines for the second company (some in other languages)."
+            "p": "<b>Screen purpose:</b> Press headlines for Larsen &amp; Toubro (some in other languages)."
           },
           {
             "p": "<b>Components:</b>"
           },
           {
             "ul": [
-              "Same as company 1."
+              "Same as the Apollo Hospitals screen."
             ],
             "ordered": false
           },
           {
             "img": {
               "src": "screenshots/screenshots/Research-feed-x.png",
-              "cap": "Research, company 2, Feed tab, X"
+              "cap": "Research, Larsen &amp; Toubro, Feed tab, X"
             }
           },
           {
-            "p": "<b>Screen purpose:</b> Social and press-style posts for the second company."
+            "p": "<b>Screen purpose:</b> Social and press-style posts for Larsen &amp; Toubro."
           },
           {
             "p": "<b>Components:</b>"
           },
           {
             "ul": [
-              "Same as company 1, no item expanded; source badges are publisher names."
+              "Same as the Apollo Hospitals screen, no item expanded; source badges are publisher names."
             ],
             "ordered": false
           },
           {
             "img": {
               "src": "screenshots/screenshots/Research-story-act.png",
-              "cap": "Research, chapter reader (Act I, Who Are You?)"
+              "cap": "Research, chapter reader (Larsen &amp; Toubro, Act I, Who Are You?)"
             }
           },
           {
-            "p": "<b>Screen purpose:</b> Full-page chapter reader for the first story act: origin of the company, key facts and milestones. The user switches chapters on the left and acts on the bottom rail."
+            "p": "<b>Screen purpose:</b> Full-page chapter reader for Act I of the Larsen &amp; Toubro story: origin of the company, key facts and milestones. The user switches chapters on the left and acts on the bottom rail."
           },
           {
             "p": "<b>Components</b> (<code>ShellView.tsx</code>):"
