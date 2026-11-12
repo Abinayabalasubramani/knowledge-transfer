@@ -1185,24 +1185,24 @@ window.KT = [
             "h": "10. Research: <code>https://xirr.ai/research</code>"
           },
           {
-            "p": "Research pages (<code>ResearchPage.tsx</code>, wrapped by <code>InvestigoPage.tsx</code>) show the sidebar only, with no portal header. Every company screen shares the top bar (<code>HomeTopBar.tsx</code>: Investigo.ai title, company search box, Snapshot / Story / Feed switch) and a left panel with the company name (<code>HomeHeader.tsx</code>) and the Quick Take card (<code>QuickTake.tsx</code>: headline, sector line, summary, scrollable Bull Case and Bear Case boxes). Two companies are shown below with the same set of screens."
+            "p": "Research pages (<code>ResearchPage.tsx</code>, wrapped by <code>InvestigoPage.tsx</code>) show the sidebar only, with no portal header. Every company screen shares the top bar (<code>HomeTopBar.tsx</code>: Investigo.ai title, company search box, Snapshot / Story / Feed switch) and a left panel with the company name (<code>HomeHeader.tsx</code>) and the Quick Take card (<code>QuickTake.tsx</code>: headline, sector line, summary, scrollable Bull Case and Bear Case boxes). The screens below use Larsen &amp; Toubro as the example company."
           },
           {
             "img": {
-              "src": "screenshots/from-pdf/company1-snapshot.png",
-              "cap": "Research, Apollo Hospitals, Snapshot tab (top)"
+              "src": "screenshots/screenshots/Research-Snapshot.png",
+              "cap": "Research, Larsen &amp; Toubro, Snapshot tab (top)"
             }
           },
           {
-            "p": "<b>Screen purpose:</b> One-screen factsheet for a company: price, market cap, 52-week range, price chart and performance."
+            "p": "<b>Screen purpose:</b> One-screen factsheet for Larsen &amp; Toubro: price, market cap, 52-week range, price chart and performance. A back arrow next to the title returns the user to the previous screen."
           },
           {
             "p": "<b>Components:</b>"
           },
           {
             "ul": [
-              "Top bar: Investigo.ai title, \"Search companies...\" box, Snapshot (active) / Story / Feed switch.",
-              "Company name and Quick Take card.",
+              "Top bar with a back arrow button next to the Investigo.ai title, search box, Snapshot (active) / Story / Feed switch.",
+              "Company name and Quick Take card with Bull Case and Bear Case.",
               "Company header (NSE symbol, ISIN, cap-size and sector chips): identifies the stock (<code>HomeHeader.tsx</code>).",
               "Price block (price, day change badge, date and currency note), Market Cap and 52- week low / high slider (<code>MetricsPanel.tsx</code>).",
               "Price &amp; Valuation chart with metric tabs (Price, PE, EV/EBITDA, Price to Sales, Price to Book): picks which series to chart.",
@@ -1212,8 +1212,8 @@ window.KT = [
           },
           {
             "img": {
-              "src": "screenshots/from-pdf/company1-snapshot2.png",
-              "cap": "Research, Apollo Hospitals, Snapshot tab (scrolled)"
+              "src": "screenshots/screenshots/Research-snapshot2.png",
+              "cap": "Research, Larsen &amp; Toubro, Snapshot tab (scrolled)"
             }
           },
           {
@@ -1233,8 +1233,8 @@ window.KT = [
           },
           {
             "img": {
-              "src": "screenshots/from-pdf/company1-story.png",
-              "cap": "Research, Apollo Hospitals, Story tab (intro)"
+              "src": "screenshots/screenshots/Research-story.png",
+              "cap": "Research, Larsen &amp; Toubro, Story tab (intro)"
             }
           },
           {
@@ -1254,8 +1254,8 @@ window.KT = [
           },
           {
             "img": {
-              "src": "screenshots/from-pdf/company1-act-wheel.png",
-              "cap": "Research, Apollo Hospitals, Story tab (act wheel)"
+              "src": "screenshots/screenshots/Research-story2.png",
+              "cap": "Research, Larsen &amp; Toubro, Story tab (act wheel)"
             }
           },
           {
@@ -1267,142 +1267,7 @@ window.KT = [
           {
             "ul": [
               "Centre node with the company name (hub) and seven numbered nodes I to VII (Who Are You?, Show Me the Money, What's Happening Now?, Who's Behind This?, What Could Go Wrong?, What's Next?, The Verdict): <code>OrbitNavigation.tsx</code>.",
-              "Tooltip \"What's Happening Now?\" over node III (hover state).",
               "Top bar and Quick Take panel."
-            ],
-            "ordered": false
-          },
-          {
-            "img": {
-              "src": "screenshots/from-pdf/company1-filings.png",
-              "cap": "Research, Apollo Hospitals, Feed tab, Announcements &amp; Filings"
-            }
-          },
-          {
-            "p": "<b>Screen purpose:</b> Shows exchange filings for the company with bullet summaries; the user expands an item to read the points and open the source."
-          },
-          {
-            "p": "<b>Components:</b>"
-          },
-          {
-            "ul": [
-              "Feed sub-tabs (Announcements &amp; Filings active, News, X): <code>FeedPanel.tsx</code>.",
-              "Filing list (exchange badge NSE or BSE, title, date, expand arrow); first item expanded with bullet summary and \"SOURCE\" link.",
-              "Scrollable list with its own scrollbar.",
-              "Top bar and Quick Take panel."
-            ],
-            "ordered": false
-          },
-          {
-            "img": {
-              "src": "screenshots/from-pdf/company1-news.png",
-              "cap": "Research, Apollo Hospitals, Feed tab, News"
-            }
-          },
-          {
-            "p": "<b>Screen purpose:</b> Shows press headlines about the company with publisher and date."
-          },
-          {
-            "p": "<b>Components:</b>"
-          },
-          {
-            "ul": [
-              "Feed sub-tabs (News active).",
-              "News rows (PRESS badge, headline, publisher and date); scrollable.",
-              "The URL at the bottom is the browser status bar while hovering a link, not part of the app."
-            ],
-            "ordered": false
-          },
-          {
-            "img": {
-              "src": "screenshots/from-pdf/company1-x.png",
-              "cap": "Research, Apollo Hospitals, Feed tab, X"
-            }
-          },
-          {
-            "p": "<b>Screen purpose:</b> Shows posts from X (social) accounts about the company, summarised."
-          },
-          {
-            "p": "<b>Components:</b>"
-          },
-          {
-            "ul": [
-              "Feed sub-tabs (X active).",
-              "Post rows with source badge, headline and date; first item expanded with bullet points and \"SOURCE\" link; scrollable."
-            ],
-            "ordered": false
-          },
-          {
-            "img": {
-              "src": "screenshots/screenshots/Research-Snapshot.png",
-              "cap": "Research, Larsen &amp; Toubro, Snapshot tab (top)"
-            }
-          },
-          {
-            "p": "<b>Screen purpose:</b> The same Snapshot factsheet, shown here for Larsen &amp; Toubro. A back arrow next to the title returns the user to the previous screen."
-          },
-          {
-            "p": "<b>Components:</b>"
-          },
-          {
-            "ul": [
-              "Top bar with a back arrow button next to the Investigo.ai title, search box, Snapshot / Story / Feed switch.",
-              "Company name and Quick Take card with Bull Case and Bear Case.",
-              "Header chips, price, change badge, Market Cap, 52-week slider, Price &amp; Valuation chart with metric tabs, Price Performance list."
-            ],
-            "ordered": false
-          },
-          {
-            "img": {
-              "src": "screenshots/screenshots/Research-snapshot2.png",
-              "cap": "Research, Larsen &amp; Toubro, Snapshot tab (scrolled)"
-            }
-          },
-          {
-            "p": "<b>Screen purpose:</b> Financial ratios, valuation and shareholding for Larsen &amp; Toubro."
-          },
-          {
-            "p": "<b>Components:</b>"
-          },
-          {
-            "ul": [
-              "Same as the Apollo Hospitals screen: metric tiles, valuation panel, shareholding donut with legend and \"Know more\" button."
-            ],
-            "ordered": false
-          },
-          {
-            "img": {
-              "src": "screenshots/screenshots/Research-story.png",
-              "cap": "Research, Larsen &amp; Toubro, Story tab (intro)"
-            }
-          },
-          {
-            "p": "<b>Screen purpose:</b> Plain-language introduction to Larsen &amp; Toubro."
-          },
-          {
-            "p": "<b>Components:</b>"
-          },
-          {
-            "ul": [
-              "Same as the Apollo Hospitals screen: headline, narrative card, four stat tiles, \"SCROLL\" hint."
-            ],
-            "ordered": false
-          },
-          {
-            "img": {
-              "src": "screenshots/screenshots/Research-story2.png",
-              "cap": "Research, Larsen &amp; Toubro, Story tab (act wheel)"
-            }
-          },
-          {
-            "p": "<b>Screen purpose:</b> Chapter navigation wheel for Larsen &amp; Toubro."
-          },
-          {
-            "p": "<b>Components:</b>"
-          },
-          {
-            "ul": [
-              "Same as the Apollo Hospitals screen, with no hover tooltip."
             ],
             "ordered": false
           },
@@ -1413,14 +1278,17 @@ window.KT = [
             }
           },
           {
-            "p": "<b>Screen purpose:</b> Lists exchange filings for Larsen &amp; Toubro; none is expanded."
+            "p": "<b>Screen purpose:</b> Lists exchange filings for the company with bullet summaries; the user expands an item to read the points and open the source."
           },
           {
             "p": "<b>Components:</b>"
           },
           {
             "ul": [
-              "Same as the Apollo Hospitals screen, all rows collapsed."
+              "Feed sub-tabs (Announcements &amp; Filings active, News, X): <code>FeedPanel.tsx</code>.",
+              "Filing list (exchange badge NSE or BSE, title, date, expand arrow); all rows collapsed. An expanded item shows a bullet summary and a \"SOURCE\" link.",
+              "Scrollable list with its own scrollbar.",
+              "Top bar and Quick Take panel."
             ],
             "ordered": false
           },
@@ -1431,14 +1299,15 @@ window.KT = [
             }
           },
           {
-            "p": "<b>Screen purpose:</b> Press headlines for Larsen &amp; Toubro (some in other languages)."
+            "p": "<b>Screen purpose:</b> Shows press headlines about the company with publisher and date (some in other languages)."
           },
           {
             "p": "<b>Components:</b>"
           },
           {
             "ul": [
-              "Same as the Apollo Hospitals screen."
+              "Feed sub-tabs (News active).",
+              "News rows (PRESS badge, headline, publisher and date); scrollable."
             ],
             "ordered": false
           },
@@ -1449,14 +1318,15 @@ window.KT = [
             }
           },
           {
-            "p": "<b>Screen purpose:</b> Social and press-style posts for Larsen &amp; Toubro."
+            "p": "<b>Screen purpose:</b> Shows social and press-style posts about the company, summarised."
           },
           {
             "p": "<b>Components:</b>"
           },
           {
             "ul": [
-              "Same as the Apollo Hospitals screen, no item expanded; source badges are publisher names."
+              "Feed sub-tabs (X active).",
+              "Post rows with source badge (publisher names), headline and date; no item expanded; scrollable. An expanded item shows bullet points and a \"SOURCE\" link."
             ],
             "ordered": false
           },
