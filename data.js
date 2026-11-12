@@ -1844,116 +1844,6 @@ window.KT = [
             "ordered": false
           }
         ]
-      },
-      {
-        "title": "Open items",
-        "parts": [
-          {
-            "p": "Found by reading the code; none was reproduced in a running build."
-          },
-          {
-            "table": {
-              "head": [
-                "#",
-                "Area",
-                "Issue",
-                "State / next step"
-              ],
-              "rows": [
-                [
-                  "1",
-                  "Routing / build",
-                  "<code>AppRoutes.tsx</code> lazy-imports <code>.../dashboard/investigoPage</code>, but the file is <code>InvestigoPage.tsx</code>. Works on Windows, fails on a Linux build server or CI",
-                  "Fix the import casing"
-                ],
-                [
-                  "2",
-                  "Build",
-                  "<code>build</code> runs <code>vite build</code> only, so type errors do not fail the build",
-                  "Use <code>tsc -b &amp;&amp; vite build</code> after fixing type errors"
-                ],
-                [
-                  "3",
-                  "Notifications polling",
-                  "The 30 s <code>setInterval</code> in <code>FamilyDataContext</code> has an empty dependency array, so it captures <code>currentClientId</code> as null and likely never polls",
-                  "Add <code>currentClientId</code> to the dependencies"
-                ],
-                [
-                  "4",
-                  "HTTP layer",
-                  "<code>LoginCard</code>, <code>fetchNotifications</code> and the logout in <code>auth.ts</code> use raw <code>fetch</code>: no token injection or refresh. Notifications send no Authorization header (verify with backend)",
-                  "Move to <code>apiClient</code>"
-                ],
-                [
-                  "5",
-                  "Code size",
-                  "<code>RiskCompassStrategy</code> (~4.6k lines), <code>OverviewPage</code> (~1.8k), <code>Updates</code> (~1.6k), <code>ReportsPage</code> (~1.6k), <code>GraphComponent</code> (~1.4k)",
-                  "Split into smaller components and hooks"
-                ],
-                [
-                  "6",
-                  "Dead / duplicate code",
-                  "<code>Updates2</code>, <code>olderreports</code>, <code>Header</code> vs <code>Header1</code>, <code>Dasboardv3</code> (misspelt); <code>performersUrl</code>, <code>strategyPerformersUrl</code>, <code>getPerformersUrl</code> are identical",
-                  "Confirm usage, remove, consolidate"
-                ],
-                [
-                  "7",
-                  "Security",
-                  "Tokens are in localStorage (exposed to XSS); paste is blocked on the password field",
-                  "Review with security; consider httpOnly cookies"
-                ],
-                [
-                  "8",
-                  "Login UX",
-                  "Fixed 3-second delay on every login response",
-                  "Product decision"
-                ],
-                [
-                  "9",
-                  "Legacy helpers",
-                  "<code>clearAllUserData</code>, <code>performLogout</code>, <code>validateUserSessionLegacy</code> use localStorage keys no longer written",
-                  "Remove once confirmed unused"
-                ],
-                [
-                  "10",
-                  "Pending work",
-                  "<code>TransactionDocsPage.tsx</code> TODOs: \"Replace with actual API call\" (~line 144), \"Replace with actual download logic\" (~line 234); <code>olderreports.tsx</code> combined-endpoint TODO (~line 809)",
-                  "Finish when backend is ready"
-                ],
-                [
-                  "11",
-                  "Typing",
-                  "Widespread <code>any</code>; <code>familyData: any</code> in contexts",
-                  "Add types in <code>src/types</code>"
-                ],
-                [
-                  "12",
-                  "Logging",
-                  "About 80 <code>console.log</code> calls (stripped in prod); a <code>logger</code> util exists",
-                  "Standardise on <code>logger</code>"
-                ],
-                [
-                  "13",
-                  "Repo hygiene",
-                  "<code>src.zip</code>, <code>src (2).zip</code>, <code>XIRR-Portfolio.zip</code> and a prototype HTML sit in the project; the folder is not a git repository",
-                  "Move to the real Git repo, remove archives"
-                ],
-                [
-                  "14",
-                  "Env config",
-                  "<code>.env</code> holds many commented URLs for different environments",
-                  "Use <code>.env.development</code> and <code>.env.production</code>"
-                ],
-                [
-                  "15",
-                  "Testing",
-                  "No unit or e2e tests and no test script",
-                  "Add Vitest and Playwright for the critical flows"
-                ]
-              ]
-            }
-          }
-        ]
       }
     ]
   },
@@ -2875,26 +2765,6 @@ window.KT = [
               "Disclaimer card: a bordered, tinted card with a heading and two paragraphs."
             ],
             "ordered": false
-          },
-          {
-            "h": "Pages with no screenshot"
-          },
-          {
-            "p": "These routes exist in <code>app/</code> but have no screenshot in the folder: Welcome (<code>/welcome</code>), Notifications (<code>/notifications</code>), News &amp; Events (<code>/news-events</code>), Change Password (<code>/change-password</code>), the Announcements, Transactions and Corp. Actions lists (<code>/analytics/announcements</code>, <code>/analytics/transactions</code>, <code>/analytics/corp-actions</code>), the full-screen charts (<code>/chart-fullscreen</code>, <code>/compare-chart-fullscreen</code>), and the staff (RM) screens and vault and upload screens."
-          },
-          {
-            "h": "Unsure"
-          },
-          {
-            "ul": [
-              "Two files map to <code>/overview</code>, <code>/strategies</code> and <code>/audit/[id]</code> (one in <code>app/</code>, one in <code>app/(tabs)/</code>). Which one is live is not confirmed.",
-              "Which of <code>Header</code> and <code>SharedHeader</code> draws the header on each screen is not confirmed.",
-              "The Profile screen shows App Version 1.0.0, but section 1 gives the app version as 1.2.10 from <code>app.json</code>.",
-              "The LT holding shows XIRR 8.98% at the top, and 8.92% in the Compare table.",
-              "How the user reaches the Reports screens is not confirmed.",
-              "The Overview member circle is not confirmed to be the <code>FamilyTree</code> component."
-            ],
-            "ordered": false
           }
         ]
       },
@@ -3329,75 +3199,109 @@ window.KT = [
               "Android keystore: <code>credentials/android/keystore.jks</code>. iOS: distribution certificates and provisioning profiles for the app (<code>XIRR</code>) and the widget extension (<code>XIRRPortfolioWidgetExtension</code>). Paths and passwords are referenced from <code>credentials.json</code>.",
               "Losing the Android keystore means no more updates to the same Play listing. Keep a copy in a secure vault."
             ]
-          }
-        ]
-      },
-      {
-        "title": "11. Known Issues & Limitations",
-        "parts": [
+          },
           {
-            "p": "The items below were observed in the files; none has been changed."
+            "p": "<b>The 3 steps for an APK / AAB build</b>"
+          },
+          {
+            "p": "Run them from the <code>Native-Mobile</code> folder."
           },
           {
             "table": {
               "head": [
-                "Issue",
-                "Where",
-                "Why it matters"
+                "Step",
+                "Command",
+                "What it does"
               ],
               "rows": [
                 [
-                  "Signing secrets in the project",
-                  "<code>credentials.json</code> holds plaintext keystore and certificate passwords; <code>credentials/</code> holds the <code>.jks</code>, <code>.p12</code> and <code>.mobileprovision</code> files",
-                  "Anyone with the folder can sign builds as the company. Move to EAS-managed credentials or a vault, and rotate if shared."
+                  "1. Log in",
+                  "<code>eas login</code>",
+                  "Signs the terminal in to the Expo account that owns the project. <code>eas whoami</code> shows who is signed in."
                 ],
                 [
-                  "Tokens in AsyncStorage",
-                  "<code>STORAGE_KEYS</code> in <code>config/api.ts</code>",
-                  "AsyncStorage is unencrypted. <code>expo-secure-store</code> is installed and is the safer place."
+                  "2. Pick the platform",
+                  "<code>--platform android</code>, <code>--platform ios</code> or <code>--platform all</code>",
+                  "Chooses which store build to make."
                 ],
                 [
-                  "Two data-fetching styles",
-                  "<code>useQuery</code> in 14 files; the client tabs and <code>hooks/*</code> use <code>useState</code> / <code>useEffect</code>",
-                  "Caching and retry differ by screen. Pick one approach when you change a screen."
-                ],
-                [
-                  "Cleartext traffic allowed on Android",
-                  "<code>usesCleartextTraffic=\"true\"</code> in <code>AndroidManifest.xml</code>",
-                  "Fine for local dev; review before a production release."
-                ],
-                [
-                  "Duplicate and legacy screens",
-                  "<code>app/overview.tsx</code> vs <code>(tabs)/overview.tsx</code>; <code>app/strategies.tsx</code> vs <code>(tabs)/strategies.tsx</code>; <code>overview1.tsx</code> (stub); hidden tabs",
-                  "Confirm which copy is live before editing."
-                ],
-                [
-                  "Push notifications missing",
-                  "<code>expo-notifications</code> is not installed",
-                  "The notifications screen reads from an API; there are no push alerts."
-                ],
-                [
-                  "Stale docs",
-                  "<code>README.md</code> (says <code>mobile-app/</code>, Expo Go, <code>expo build</code>), <code>FIXES.md</code> (SDK 51 to 54, RN 0.76), <code>PAGES_SUMMARY.md</code>, the widget developer guide, <code>CORS_AND_NETWORK.md</code> (mentions <code>api-xirr.ai.com</code>)",
-                  "Treat as history. The code and this document take precedence."
-                ],
-                [
-                  "Two version sources",
-                  "<code>app.json</code> and <code>android/app/build.gradle</code>",
-                  "Bump both at release."
-                ],
-                [
-                  "No automated tests",
-                  "No test folder or script in <code>package.json</code>",
-                  "Regressions are caught manually."
-                ],
-                [
-                  "Very large files",
-                  "<code>services/api.ts</code> (~58 KB), <code>AuditDetail.tsx</code> (~73 KB), <code>terms.tsx</code> (~59 KB), <code>reports.tsx</code>, <code>rm-clients.tsx</code>, <code>strategies.tsx</code> (each 50 KB+)",
-                  "Hard to review. Change in small steps."
+                  "3. Pick the profile",
+                  "<code>--profile preview</code> or <code>--profile production</code>",
+                  "<code>preview</code> makes an APK for testing. <code>production</code> makes an AAB for Android and a Release build for iOS."
                 ]
               ]
             }
+          },
+          {
+            "p": "These are the full commands, and the npm scripts wrap the same ones:"
+          },
+          {
+            "table": {
+              "head": [
+                "Goal",
+                "Command",
+                "npm script"
+              ],
+              "rows": [
+                [
+                  "APK for testing",
+                  "<code>eas build --platform android --profile preview</code>",
+                  "<code>npm run build:android:apk</code>"
+                ],
+                [
+                  "AAB for Play Store",
+                  "<code>eas build --platform android</code> (no <code>--profile</code> means production)",
+                  "<code>npm run build:android</code>"
+                ],
+                [
+                  "iOS for App Store",
+                  "<code>eas build --platform ios</code>",
+                  "<code>npm run build:ios</code>"
+                ],
+                [
+                  "Both stores",
+                  "<code>eas build --platform all</code>",
+                  "<code>npm run build:all</code>"
+                ]
+              ]
+            }
+          },
+          {
+            "p": "Production builds auto-increment the build number, and <code>appVersionSource</code> is <code>local</code>. So still bump <code>version</code>, <code>android.versionCode</code> and <code>ios.buildNumber</code> in <code>app.json</code>, and <code>android/app/build.gradle</code>, as the release steps above say."
+          },
+          {
+            "p": "<b>Handing the project to someone else</b>"
+          },
+          {
+            "p": "The project belongs to the Expo organization <code>abinayabs-organization</code> (owner in <code>app.json</code>, project ID <code>27e76b7f-bd84-4b1f-bdff-de2c116a0afa</code>). Expo's <code>eas login</code> can't be “changed” inside the project. The new person logs in with their own Expo account, and it has to be able to see that organization."
+          },
+          {
+            "p": "<b>Expo (builds):</b>"
+          },
+          {
+            "ul": [
+              "You, or whoever is the organization's owner, open expo.dev and go to the organization's Members page.",
+              "They invite the new person, preferably with the Admin role, so they can build and manage credentials.",
+              "The new person accepts, runs <code>eas login</code> with their own account, and runs <code>eas whoami</code> to check.",
+              "Then <code>eas build</code> works unchanged. <code>owner</code> and <code>projectId</code> in <code>app.json</code> stay as they are.",
+              "If the project must move to a different organization, that needs a transfer in the Expo dashboard and then changing <code>owner</code> and <code>projectId</code>. Ask Expo support before doing that. The exact steps have not been verified."
+            ],
+            "ordered": true
+          },
+          {
+            "p": "<b>Signing keys:</b>"
+          },
+          {
+            "ul": [
+              "The Android keystore is in <code>credentials/android/keystore.jks</code>. Its passwords are in <code>credentials.json</code>.",
+              "Losing the keystore means no more updates to the same Play listing.",
+              "Pass the keys on through a password manager, not chat or email.",
+              "Better still, upload them to Expo with <code>eas credentials</code>, so the new owner doesn't need the local files. How the credentials are set up on Expo today has not been checked."
+            ],
+            "ordered": false
+          },
+          {
+            "p": "<b>Submitting to the stores:</b> store upload is manual today: <code>eas.json</code> has an empty <code>submit.production</code> block. The new person needs their own Google Play Console and App Store Connect access, separate from Expo."
           }
         ]
       }
